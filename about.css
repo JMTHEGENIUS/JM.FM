@@ -1,0 +1,122 @@
+/* === ABOUT PAGE STYLING (matches rest of site) === */
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom right, #0a0a0f, #1a1a2e);
+  color: #f1f1f1;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background: rgba(0, 0, 0, 0.85);
+  padding: 1.5rem 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #ffcc00;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Nav */
+nav {
+  margin-top: 1rem;
+}
+
+nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #f1f1f1;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+  color: #ffcc00;
+  text-shadow: 0 0 10px #ffcc00;
+}
+
+/* Sections */
+section {
+  margin: 3rem auto;
+  max-width: 800px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+section h2 {
+  color: #ffcc00;
+  margin-bottom: 1rem;
+}
+
+section p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* YouTube video embed */
+iframe {
+  width: 100%;
+  max-width: 700px;
+  height: 400px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+/* Footer */
+footer {
+  margin-top: 4rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.85);
+  font-size: 0.9rem;
+  color: #aaa;
+}
+/* Mobile adjustments for Join page */
+@media (max-width: 768px) {
+  .membership {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .membership-card {
+    width: 90%;
+    max-width: 350px;
+    padding: 2rem;
+  }
+
+  .membership-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .membership-card p {
+    font-size: 0.95rem;
+  }
+
+  .unlock-btn {
+    width: 80%;
+    max-width: 250px;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .unlock-btn:active,
+  .unlock-btn:focus {
+    transform: scale(1.03);
+    box-shadow: 0 3px 15px rgba(79, 209, 197, 0.4);
+  }
+}
