@@ -1,13 +1,14 @@
 // ======= MAIN JS =======
 console.log("main.js is running ✅");
 
-// NAVIGATION TOGGLE FOR MOBILE
+// ======= MOBILE NAV TOGGLE =======
 const navToggle = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-links');
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('nav-links-active');
+    navMenu.classList.toggle('active'); // match CSS: .nav-links.active
+    navToggle.classList.toggle('toggle'); // animate hamburger
   });
 }
 
@@ -16,11 +17,13 @@ const navLinks = document.querySelectorAll('.nav-links a');
 
 navLinks.forEach(link => {
   link.addEventListener('click', () => {
-    if (navMenu.classList.contains('nav-links-active')) {
-      navMenu.classList.remove('nav-links-active');
+    if (navMenu.classList.contains('active')) {
+      navMenu.classList.remove('active');
+      navToggle.classList.remove('toggle'); // reset hamburger
     }
   });
 });
+
 
 // CLICK LOGO TO GO HOME
 const logo = document.querySelector('.logo');
