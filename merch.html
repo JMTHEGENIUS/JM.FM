@@ -3,12 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Merch | JM.FM</title>
+  <title>GENIUS MERCH</title>
+
+  <!-- 🚀 Redirect non-members immediately -->
+  <script>
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (!isLoggedIn) {
+      window.location.replace("join.html");
+    }
+  </script>
+
   <link rel="stylesheet" href="merch.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>JM.FM - Merch</h1>
+    <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
     <nav>
       <a href="explore.html">Explore</a>
       <a href="music.html">Music</a>
@@ -27,11 +37,11 @@
       <!-- Styled Google Form Embed -->
       <div class="form-container">
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSebUtsbTk94iPP91BGx8Y_f4qYt4Ne_9cq9F5UEBgQinTfeng/viewform?embedded=true" 
-        width="640"
-        height="427"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0">Loading…</iframe>
+          width="640"
+          height="427"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0">Loading…</iframe>
       </div>
     </section>
 
@@ -46,8 +56,11 @@
   </main>
 
   <footer>
-    <p>© 2025 JM The Genius | JM.FM App</p>
+    <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
+
+  <script src="js/main.js"></script>
+
 </body>
 </html>
 

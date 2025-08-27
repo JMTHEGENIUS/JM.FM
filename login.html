@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GENIUS LOGIN</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Enter Email & Password</h2>
+
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+
+    <button id="login-btn">Login</button>
+
+    <p>New here? <a href="join.html">Join Now</a></p>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('login-btn');
+
+    loginBtn.addEventListener('click', () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Basic validation
+      if(email && password) {
+        // For demo purposes, this accepts any non-empty input
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', email);
+        alert('Login successful! Redirecting to profile...');
+        window.location.href = 'profile.html';
+      } else {
+        alert('Please enter a valid email and password.');
+      }
+    });
+  </script>
+
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>
+

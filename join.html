@@ -3,27 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join | JM.FM</title>
+  <title>JOIN THE GENIUS</title>
   <link rel="stylesheet" href="join.css">
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- PayPal SDK -->
-  <script 
+  <script
     src="https://www.paypal.com/sdk/js?client-id=BAAg4HTr6XPE5PtoDjAAJjoRHjB2o3jBnt78aEcHjv_Z_QTg_l9sh8KutFAd4UGNVQNpFVd8U-fiez78d0&components=hosted-buttons&enable-funding=venmo&currency=USD">
   </script>
 </head>
 <body>
 
   <header>
-    <h1>JM.FM</h1>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="explore.html">Explore</a>
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="join.html" class="active">Join</a>
-      <a href="profile.html">Profile</a>
+    <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
+    <nav class="nav-links" id="nav-links">
+      <!-- Nav links injected via JS -->
     </nav>
 
     <div class="hamburger">
@@ -35,38 +30,75 @@
 
   <section class="join-hero">
     <h2>Become a Member</h2>
-    <p>Unlock **all exclusive content** for just $10/month. Music, merch, and immersive experiences — all in one place.</p>
+    <p>Unlock <strong>all exclusive content</strong> for just $10/month. Music, merch, and immersive experiences — all in one place.</p>
   </section>
 
   <section class="membership">
     <div class="membership-card">
       <h3>All Access Membership</h3>
       <p>Get instant access to unreleased music, limited merch drops, and the immersive JM.FM world for the entire month.</p>
-      <button class="unlock-btn" onclick="showPayPal('join')">Subscribe for $10/month</button>
+      <button class="unlock-btn" id="subscribe-btn">Subscribe for $10/month</button>
       <div id="paypal-container-join" class="paypal-hidden"></div>
     </div>
   </section>
 
   <footer>
-    <p>© 2025 JM The Genius | JM.FM App</p>
+    <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
 
   <script>
-    function showPayPal(section) {
-      const containerId = `paypal-container-${section}`;
-      const container = document.getElementById(containerId);
+    // 1️⃣ Handle login state
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const navLinks = document.getElementById("nav-links");
 
-      // Only render PayPal once
+    if (isLoggedIn) {
+      // Already a member → redirect to profile
+      window.location.href = "profile.html";
+    } else {
+      // Not logged in → show Join options and nav
+      navLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="join.html" class="active">Join</a>
+        <a href="login.html">Login</a>
+      `;
+    }
+
+    // 2️⃣ PayPal button functionality
+    const subscribeBtn = document.getElementById("subscribe-btn");
+    subscribeBtn.addEventListener("click", () => {
+      const container = document.getElementById("paypal-container-join");
+
+      // Render PayPal button only once
       if (!container.classList.contains("paypal-loaded")) {
         paypal.HostedButtons({ hostedButtonId: "N39GYUNMQHBKQ" })
-          .render(`#${containerId}`);
+          .render(`#paypal-container-join`);
         container.classList.add("paypal-loaded");
       }
 
-      // Toggle visibility
-      container.classList.toggle("paypal-hidden");
-    }
+      // Show PayPal container
+      container.classList.remove("paypal-hidden");
+    });
+
+    // 3️⃣ Optional: simulate purchase for testing
+    // After successful payment, set login state:
+    // localStorage.setItem("isLoggedIn", "true");
+    // localStorage.setItem("userEmail", "user@email.com");
+    // window.location.href = "profile.html";
   </script>
+
+  <script src="js/main.js"></script>
+
+<!-- simulation -->
+ <section id="login-section">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button id="login-btn">Login</button>
+</section>
+<!-- log out -->
+ <button id="logout-btn">Logout</button>
 
 </body>
 </html>
+

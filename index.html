@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JM.FM App</title>
+  <title>THE GENIUS HOME</title>
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- PayPal SDK -->
@@ -15,14 +16,11 @@
 <body>
 
   <header>
-    <h1>JM.FM</h1>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="join.html">Join</a>
-      <a href="profile.html">Profile</a>
+    <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
+
+    <!-- Dynamic nav bar -->
+    <nav class="nav-links" id="nav-links">
+      <!-- Links injected by JS -->
     </nav>
 
     <!-- Hamburger button -->
@@ -39,7 +37,7 @@
     <a href="explore.html"><button>Enter Now</button></a>
   </section>
 
-  <section class="features">
+  <!-- <section class="features">
     <div class="feature-card">
       <h3>Exclusive Music</h3>
       <p>Be the first to hear new tracks.</p>
@@ -57,12 +55,69 @@
       <p>Experience an interactive cosmic timeline that evolves with the music.</p>
       <button class="hub-btn" onclick="window.location.href='join.html?autopaypal=true'">Unlock</button>
     </div>
-  </section>
+  </section> -->
 
   <footer>
-    <p>© 2025 JM The Genius | JM.FM App</p>
+    <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
+
+  <!-- Dynamic nav bar script -->
+  <script>
+    const navLinks = document.getElementById("nav-links");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (isLoggedIn) {
+      // Logged-in users see Profile + Logout, Music/Merch go to actual pages
+      navLinks.innerHTML = `
+        <a href="music.html">Music</a>
+        <a href="merch.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logout-btn">Log Out</a>
+      `;
+
+      // Logout functionality
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "index.html";
+      });
+
+    } else {
+      // Logged-out users see Join + Login, Music/Merch redirect to join
+      navLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="join.html">Music</a>
+        <a href="join.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="join.html">Join</a>
+        <a href="login.html">Login</a>
+      `;
+    }
+  </script>
+
+  <!-- Hamburger menu script -->
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    // Close nav menu on link click (mobile)
+    nav.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A') {
+        nav.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  </script>
+
+  <script src="js/main.js"></script>
 
 </body>
 </html>
+
+
 
