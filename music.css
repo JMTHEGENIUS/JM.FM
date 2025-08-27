@@ -213,6 +213,6 @@ footer {
   }
   .video-card {
     flex: none;
-    width: 100%;
+    width: 50%;
   }
 }
