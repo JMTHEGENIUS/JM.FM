@@ -206,7 +206,7 @@ footer {
     z-index: 1000;
   }
 
-  .nav-links.active {
+  .nav-links.nav-active {
     display: flex;
   }
 
