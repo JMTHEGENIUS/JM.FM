@@ -7,17 +7,17 @@ const navMenu = document.querySelector('.nav-links');
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('nav-menu-active');
+    navMenu.classList.toggle('nav-links-active');
   });
 }
 
 // CLOSE MOBILE MENU WHEN LINK IS CLICKED
-const navLinks = document.querySelectorAll('.nav-menu a');
+const navLinks = document.querySelectorAll('.nav-links a');
 
 navLinks.forEach(link => {
   link.addEventListener('click', () => {
-    if (navMenu.classList.contains('nav-menu-active')) {
-      navMenu.classList.remove('nav-menu-active');
+    if (navMenu.classList.contains('nav-links-active')) {
+      navMenu.classList.remove('nav-links-active');
     }
   });
 });
