@@ -1,65 +1,43 @@
-/* === ABOUT PAGE STYLING (matches rest of site) === */
-
-body {
+* {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(to bottom right, #0a0a0f, #1a1a2e);
-  color: #f1f1f1;
-  text-align: center;
-  line-height: 1.6;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* HEADER & NAV — matches index.css */
+/* body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #0d0d2b, #000010);
+  color: #f5f5f5;
+  overflow-x: hidden;
+} */
+
+/* === HEADER & NAV — About Page (Merged & Fixed) === */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 3rem;
+  padding: 0.8rem 3rem;             /* slightly thinner than old 1.2rem */
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(6px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
   z-index: 1000;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* subtle separation */
 }
 
 header h1 {
   font-size: 1.8rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #4fd1c5, #805ad5, #f6e05e);
+  background: linear-gradient(90deg, #4fd1c5, #805ad5, #f6e05e); /* match index hero gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* letter-spacing: 1px; */
 }
 
-/* Add this below your header/nav styles */
-body > section:first-of-type {
-  padding-top: 10px; /* Adjust to match header height */
-}
-
-nav {
-  padding: 15px 20px; /* adjust to taste */
-  box-sizing: border-box;
-}
-
-nav {
-  position: fixed; /* keeps it at the top */
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #0a0a14; /* match your theme */
-  z-index: 9999; /* keeps it above everything */
-}
-
-nav ul {
-  display: flex;
-  flex-wrap: wrap;  /* makes items wrap instead of disappearing */
-  justify-content: space-around;
-  margin: 0;
-  padding: 10px 0;
-  list-style: none;
-}
-
+/* NAV LINKS */
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -76,7 +54,7 @@ nav ul {
   color: #4fd1c5;
 }
 
-/* Hamburger menu */
+/* Hamburger menu for mobile */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -104,7 +82,7 @@ nav ul {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile nav */
+/* Mobile nav adjustments */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -119,107 +97,77 @@ nav ul {
     z-index: 1000;
   }
 
-  .nav-links.active {
+  .nav-links.nav-active {
+    display: flex;
+  }
+
+  .hamburger {
     display: flex;
   }
 
   .nav-links a {
     margin: 1rem 0;
   }
-
-  .hamburger {
-    display: flex;
-  }
 }
 
+/* Keep content below fixed header */
 .content-wrapper {
-  padding-top: 90px; /* same as header height */
+  padding-top: 100px; /* header height clearance */
 }
 
-/* Sections */
+/* === About Page Sections — Centered Cosmic Cards === */
+.content-wrapper section,
 section {
-  margin: 1.5rem auto;
+  margin: 2rem auto;
   max-width: 800px;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  text-align: center;  /* center text, titles, and iframe */
+  background: rgba(10, 10, 20, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(79, 209, 197, 0.3), 0 0 40px rgba(128, 90, 213, 0.2);
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* First section padding to clear fixed header */
-section:first-of-type {
-  padding-top: 10px; /* Desktop default */
-}
-
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-  section:first-of-type {
-    padding-top: 100px; /* Adjust to your mobile header height */
-  }
+.content-wrapper section:hover,
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 35px rgba(79, 209, 197, 0.5), 0 0 50px rgba(128, 90, 213, 0.35);
 }
 
 section h2 {
-  color: #ffcc00;
-  margin-bottom: 0.8rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #4fd1c5, #805ad5, #f6e05e); /* same as hero h2 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 section p {
   font-size: 1.1rem;
-  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  color: #f5f5f5;
+  margin-bottom: 1rem;
 }
 
-
-/* YouTube video embed */
 iframe {
+  display: block;
+  margin: 1.5rem auto 0 auto;
   width: 100%;
   max-width: 700px;
   height: 400px;
   border: none;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.2), 0 0 40px rgba(128, 90, 213, 0.15);
 }
 
-/* Footer */
-footer {
-  margin-top: 4rem;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.85);
-  font-size: 0.9rem;
-  color: #aaa;
-}
-/* Mobile adjustments for Join page */
+/* Mobile adjustments */
 @media (max-width: 768px) {
-  .membership {
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+  .content-wrapper,
+  section {
+    padding: 1.5rem 1rem;
   }
-
-  .membership-card {
-    width: 90%;
-    max-width: 350px;
-    padding: 2rem;
-  }
-
-  .membership-card h3 {
-    font-size: 1.5rem;
-  }
-
-  .membership-card p {
-    font-size: 0.95rem;
-  }
-
-  .unlock-btn {
-    width: 80%;
-    max-width: 250px;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .unlock-btn:active,
-  .unlock-btn:focus {
-    transform: scale(1.03);
-    box-shadow: 0 3px 15px rgba(79, 209, 197, 0.4);
+  iframe {
+    height: 250px;
   }
 }

@@ -119,12 +119,22 @@ main {
 .player {
   margin: 40px auto;
   max-width: 800px;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 30px 5px rgba(255, 165, 0, 0.7); /* orange glow */
+  background: rgba(0, 0, 0, 0.2); /* subtle dark overlay to enhance glow */
+  transition: box-shadow 0.3s ease;
+}
+
+.player:hover {
+  box-shadow: 0 0 50px 10px rgba(255, 165, 0, 0.9); /* stronger glow on hover */
 }
 
 .player h2 {
   margin-bottom: 15px;
-  color: #00d4ff;
+  color: #ffa500; /* match glow with text color */
 }
+
 
 /* Desktop Video Container */
 .video-container {
