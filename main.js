@@ -50,35 +50,37 @@ anchorLinks.forEach(link => {
 
 // ======= HUB BUTTON ACCESS CONTROL =======
 // Keeps guests from accessing Music/Merch directly
-document.addEventListener('DOMContentLoaded', () => {
-  // Retrieve user status (guest, loggedIn, paid)
-  function getUserStatus() {
-    return localStorage.getItem('userStatus') || 'guest';
-  }
 
-  const musicBtn = document.getElementById('music-btn');
-  const merchBtn = document.getElementById('merch-btn');
+function getUserStatus() {
+  return localStorage.getItem('userStatus') || 'guest';
+}
 
-  if (musicBtn) {
-    musicBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const status = getUserStatus();
-      if (status === 'guest') window.location.href = 'join.html';
-      else if (status === 'paid') window.location.href = 'login.html';
-      else if (status === 'loggedIn') window.location.href = 'music.html';
-    });
-  }
+const musicBtn = document.getElementById('music-btn');
+const merchBtn = document.getElementById('merch-btn');
 
-  if (merchBtn) {
-    merchBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const status = getUserStatus();
-      if (status === 'guest') window.location.href = 'join.html';
-      else if (status === 'paid') window.location.href = 'login.html';
-      else if (status === 'loggedIn') window.location.href = 'merch.html';
-    });
-  }
-});
+if (musicBtn) {
+  musicBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const status = getUserStatus();
+    console.log('Music click status:', status); // debug
+    if (status === 'guest') window.location.href = 'join.html';
+    else if (status === 'paid') window.location.href = 'login.html';
+    else if (status === 'loggedIn') window.location.href = 'music.html';
+  });
+}
+
+if (merchBtn) {
+  merchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const status = getUserStatus();
+    console.log('Merch click status:', status); // debug
+    if (status === 'guest') window.location.href = 'join.html';
+    else if (status === 'paid') window.location.href = 'login.html';
+    else if (status === 'loggedIn') window.location.href = 'merch.html';
+  });
+}
+
+
 
 // ======= YOUR EXISTING TEST LOGIN FUNCTION =======
 // Leave your join page test functions here as-is
@@ -90,6 +92,7 @@ if (loginBtn) {
     if (username && password) {
       alert(`Logged in as ${username}`);
       localStorage.setItem('loggedInUser', username);
+      localStorage.setItem('userStatus', 'loggedIn'); // ← important
       document.getElementById('login-section').style.display = 'none';
       document.querySelector('nav').innerHTML += `<a href="profile.html">Profile</a>`;
     } else {
@@ -102,6 +105,7 @@ const logoutBtn = document.getElementById('logout-btn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('loggedInUser');
+    localStorage.setItem('userStatus', 'guest'); // ← reset status
     alert('Logged out');
     location.reload();
   });

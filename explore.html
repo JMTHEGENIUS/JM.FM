@@ -117,6 +117,48 @@
     });
   </script>
 
+  <script>
+  // ======= HUB CARD ACCESS CONTROL — Matches Nav Bar Logic =======
+  document.addEventListener('DOMContentLoaded', () => {
+    // Determine user status
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userStatus = localStorage.getItem('userStatus') || (isLoggedIn ? 'loggedIn' : 'guest');
+
+    // Hub buttons
+    const musicBtn = document.getElementById('music-btn');
+    const merchBtn = document.getElementById('merch-btn');
+
+    // Music button click handler
+    if (musicBtn) {
+      musicBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (userStatus === 'guest') {
+          window.location.href = 'join.html';
+        } else if (userStatus === 'paid') {
+          window.location.href = 'login.html';
+        } else if (userStatus === 'loggedIn') {
+          window.location.href = 'music.html';
+        }
+      });
+    }
+
+    // Merch button click handler
+    if (merchBtn) {
+      merchBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (userStatus === 'guest') {
+          window.location.href = 'join.html';
+        } else if (userStatus === 'paid') {
+          window.location.href = 'login.html';
+        } else if (userStatus === 'loggedIn') {
+          window.location.href = 'merch.html';
+        }
+      });
+    }
+  });
+</script>
+
+
   <script src="js/main.js"></script>
 </body>
 </html>

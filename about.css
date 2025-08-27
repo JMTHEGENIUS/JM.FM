@@ -163,11 +163,16 @@ iframe {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-  .content-wrapper,
-  section {
-    padding: 1.5rem 1rem;
+  .content-wrapper {
+    padding: 140px 1rem 1.5rem 1rem; /* top padding for fixed header, sides & bottom remain */
   }
+
+  .content-wrapper section {
+    margin-top: 1rem; /* extra spacing between sections */
+  }
+
   iframe {
     height: 250px;
   }
 }
+
