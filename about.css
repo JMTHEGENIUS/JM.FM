@@ -34,9 +34,31 @@ header h1 {
 
 /* Add this below your header/nav styles */
 body > section:first-of-type {
-  padding-top: 120px; /* Adjust to match header height */
+  padding-top: 10px; /* Adjust to match header height */
 }
 
+nav {
+  padding: 15px 20px; /* adjust to taste */
+  box-sizing: border-box;
+}
+
+nav {
+  position: fixed; /* keeps it at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #0a0a14; /* match your theme */
+  z-index: 9999; /* keeps it above everything */
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;  /* makes items wrap instead of disappearing */
+  justify-content: space-around;
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+}
 
 .nav-links {
   display: flex;

@@ -1,34 +1,47 @@
-body {
+/* Reset */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Poppins', sans-serif;
   background: radial-gradient(circle at top, #0d0d2b, #000010);
   color: #f5f5f5;
+  overflow-x: hidden;
   text-align: center;
 }
 
+/* Header */
 header {
-  padding: 20px;
-  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 3rem;
   position: fixed;
   width: 100%;
   top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
 }
 
 header h1 {
   font-size: 1.8rem;
-  margin: 0;
+  font-weight: 700;
   background: linear-gradient(90deg, #4fd1c5, #805ad5, #f6e05e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Desktop nav */
 .nav-links {
   display: flex;
   gap: 2rem;
+  align-items: center;
 }
 
-/* Mobile nav */
 .nav-links a {
   color: #f5f5f5;
   text-decoration: none;
@@ -68,39 +81,12 @@ header h1 {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.9);
-    flex-direction: column;
-    padding: 1rem;
-    border-radius: 10px;
-    gap: 1rem;
-    z-index: 1000;
-  }
-
-  .nav-links.nav-active {
-    display: flex;
-  }
-
-  .nav-links a {
-    margin: 1rem 0;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-}
-
+/* Main spacing */
 main {
   padding-top: 120px;
 }
 
-/* Hero Section */
+/* Merch Hero Section */
 .merch-hero {
   margin: 60px auto 40px;
 }
@@ -117,7 +103,7 @@ main {
   color: #cbd5e0;
 }
 
-/* Styled Form Container */
+/* Form Container */
 .form-container {
   margin: 0 auto;
   max-width: 400px;
@@ -158,20 +144,98 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
+}
+
+/* Membership Section */
+.membership {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 60px;
+}
+
+.membership-card {
+  background: rgba(19, 47, 99, 0.8);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease-in-out;
+}
+
+.membership-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #4fd1c5;
+}
+
+.membership-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #cbd5e0;
+}
+
+.unlock-btn {
+  display: inline-block;
+  width: 100%;
+  max-width: 250px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #4fd1c5, #805ad5);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unlock-btn:active,
+.unlock-btn:focus {
+  transform: scale(1.03);
+  box-shadow: 0 3px 15px rgba(79, 209, 197, 0.4);
 }
 
 /* Footer */
 footer {
-  padding: 20px;
-  font-size: 0.9rem;
-  color: #aaa;
+  text-align: center;
+  padding: 2rem;
   background: #111;
+  color: #aaa;
+  font-size: 0.9rem;
   margin-top: 40px;
 }
-/* Mobile adjustments for Join page */
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    gap: 1rem;
+    z-index: 1000;
+  }
+
+  .nav-links.nav-active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 1rem 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
   .membership {
     flex-direction: column;
     align-items: center;
@@ -196,13 +260,6 @@ footer {
     width: 80%;
     max-width: 250px;
     padding: 0.6rem 1rem;
-    font-size: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .unlock-btn:active,
-  .unlock-btn:focus {
-    transform: scale(1.03);
-    box-shadow: 0 3px 15px rgba(79, 209, 197, 0.4);
   }
 }
+

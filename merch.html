@@ -6,12 +6,12 @@
   <title>GENIUS MERCH</title>
 
   <!-- 🚀 Redirect non-members immediately -->
-  <script>
+  <!-- <script>
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) {
       window.location.replace("join.html");
     }
-  </script>
+  </script> -->
 
   <link rel="stylesheet" href="merch.css">
   <link rel="stylesheet" href="style.css">
@@ -63,7 +63,88 @@
     <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
 
-  <script src="js/main.js"></script>
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // ======== DYNAMIC NAV & REDIRECT LOGIC ========
+
+  const navLinks = document.getElementById("nav-links");
+  const hamburger = document.querySelector('.hamburger');
+
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  if (navLinks) {
+    if (isLoggedIn) {
+      navLinks.innerHTML = `
+        <a href="music.html">Music</a>
+        <a href="merch.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logout-btn">Log Out</a>
+      `;
+
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("isLoggedIn");
+          window.location.href = "index.html";
+        });
+      }
+
+    } else {
+      navLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="join.html">Music</a>
+        <a href="join.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="join.html">Join</a>
+        <a href="login.html">Login</a>
+      `;
+    }
+  }
+
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navLinks.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  }
+
+  const musicBtn = document.getElementById('music-btn');
+  const merchBtn = document.getElementById('merch-btn');
+
+  function getUserStatus() {
+    return localStorage.getItem('isLoggedIn') ? 'loggedIn' : 'guest';
+  }
+
+  if (musicBtn) {
+    musicBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const status = getUserStatus();
+      if (status === 'guest') window.location.href = 'join.html';
+      else window.location.href = 'music.html';
+    });
+  }
+
+  if (merchBtn) {
+    merchBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const status = getUserStatus();
+      if (status === 'guest') window.location.href = 'join.html';
+      else window.location.href = 'merch.html';
+    });
+  }
+});
+</script>
+
+
+  <script src="main.js"></script>
 
 </body>
 </html>
