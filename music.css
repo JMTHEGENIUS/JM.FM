@@ -226,8 +226,6 @@ main {
     border: none;
     position: static;        /* remove absolute positioning */
   }
-}
-
 
   .video-container iframe {
     width: 100%;
@@ -236,8 +234,7 @@ main {
     position: static;        /* remove absolute positioning */
   }
 
-
-
+}
 
 /* Footer */
 footer {
