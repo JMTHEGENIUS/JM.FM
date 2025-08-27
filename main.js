@@ -2,8 +2,8 @@
 console.log("main.js is running ✅");
 
 // NAVIGATION TOGGLE FOR MOBILE
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.querySelector('.nav-menu');
+const navToggle = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-links');
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
