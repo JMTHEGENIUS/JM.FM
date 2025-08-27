@@ -10,42 +10,38 @@
 <body>
   <!-- Header -->
   <header>
-  <!-- Logo with class for JS -->
-  <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
+    <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
 
-  <!-- Navigation links with consistent class -->
-  <nav class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="explore.html">Explore</a>
-    <a href="music.html">Music</a>
-    <a href="merch.html">Merch</a>
-    <a href="about.html" class="active">About</a>
-    <a href="profile.html">Profile</a>
-  </nav>
+    <!-- Dynamic nav bar -->
+    <nav class="nav-links" id="nav-links">
+      <!-- Links injected by JS -->
+    </nav>
 
-  <!-- Hamburger menu (optional, same structure as explore) -->
-  <div class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</header>
+    <!-- Hamburger button -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
 
 
   <!-- About Section -->
-  <section>
-    <h2>THE GENIUS MISSION</h2>
-    <p>
+ <div class="content-wrapper">
+   <section>
+     <h2>THE GENIUS MISSION</h2>
+     <p>
       Welcome to <strong>THE GENIUS WORLD</strong> — an immersive space where music, visuals,
       and creativity come together. This platform was created to give fans a
       closer look into my world: the sounds, the <strong>VIZION</strong>, and the journey.
-    </p>
-    <p>
+     </p>
+     <p>
       Through music, storytelling, and art, I share my process of growth and
       discovery. The goal is simple: to cultivate conciousness, inspire and connect with people on a
       deeper level. Thank you for being part of the journey.
-    </p>
-  </section>
+     </p>
+   </section>
+ </div>
 
   <!-- Video Section -->
   <section>
@@ -62,6 +58,58 @@
   <footer>
     <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
+   <!-- Dynamic nav bar script -->
+  <script>
+    const navLinks = document.getElementById("nav-links");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (isLoggedIn) {
+      // Logged-in users see Profile + Logout, Music/Merch go to actual pages
+      navLinks.innerHTML = `
+        <a href="music.html">Music</a>
+        <a href="merch.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logout-btn">Log Out</a>
+      `;
+
+      // Logout functionality
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "index.html";
+      });
+
+    } else {
+      // Logged-out users see Join + Login, Music/Merch redirect to join
+      navLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="join.html">Music</a>
+        <a href="join.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="join.html">Join</a>
+        <a href="login.html">Login</a>
+      `;
+    }
+  </script>
+
+  <!-- Hamburger menu script -->
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    // Close nav menu on link click (mobile)
+    nav.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A') {
+        nav.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  </script>
 
   <script src="main.js"></script>
 </body>

@@ -34,19 +34,25 @@ header h1 {
   -webkit-text-fill-color: transparent;
 }
 
-nav a {
+/* Desktop nav */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Mobile nav */
+.nav-links a {
   color: #f5f5f5;
-  margin-left: 2rem;
   text-decoration: none;
   font-weight: 500;
   transition: 0.3s;
 }
 
-nav a:hover,
-nav a.active {
+.nav-links a:hover {
   color: #4fd1c5;
 }
 
+/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -59,6 +65,47 @@ nav a.active {
   height: 3px;
   background: #fff;
   border-radius: 3px;
+  transition: 0.3s;
+}
+
+.hamburger.toggle span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.toggle span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    gap: 1rem;
+    z-index: 1000;
+  }
+
+  .nav-links.nav-active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 1rem 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
 }
 
 /* Hero */
@@ -145,31 +192,6 @@ footer {
   margin-top: 3rem;
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  nav.nav-links {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.9);
-    flex-direction: column;
-    padding: 1rem;
-    border-radius: 10px;
-  }
-
-  nav.nav-links.active {
-    display: flex;
-  }
-
-  nav a {
-    margin: 1rem 0;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-}
 /* Mobile adjustments for Join page */
 @media (max-width: 768px) {
   .membership {

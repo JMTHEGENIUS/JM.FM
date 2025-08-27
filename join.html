@@ -47,45 +47,77 @@
   </footer>
 
   <script>
-    // 1️⃣ Handle login state
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const navLinks = document.getElementById("nav-links");
+document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = document.getElementById("nav-links");
+  const hamburger = document.querySelector('.hamburger');
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-    if (isLoggedIn) {
-      // Already a member → redirect to profile
-      window.location.href = "profile.html";
-    } else {
-      // Not logged in → show Join options and nav
-      navLinks.innerHTML = `
-        <a href="index.html">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="join.html" class="active">Join</a>
-        <a href="login.html">Login</a>
-      `;
+  // 1️⃣ Handle login state & nav population
+  if (isLoggedIn) {
+    // Logged-in users → show full nav
+    navLinks.innerHTML = `
+      <a href="music.html">Music</a>
+      <a href="merch.html">Merch</a>
+      <a href="about.html">About</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout-btn">Log Out</a>
+    `;
+
+    // Logout functionality
+    const logoutBtn = document.getElementById("logout-btn");
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      window.location.href = "index.html";
+    });
+
+  } else {
+    // Guests → redirect to Join page if necessary
+    if (window.location.pathname.includes("profile.html")) {
+      window.location.href = "join.html";
     }
 
-    // 2️⃣ PayPal button functionality
-    const subscribeBtn = document.getElementById("subscribe-btn");
+    // Nav for guests
+    navLinks.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="join.html" class="active">Join</a>
+      <a href="login.html">Login</a>
+    `;
+  }
+
+  // 2️⃣ Hamburger menu toggle for mobile
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    // Close mobile nav when clicking a link
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navLinks.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  }
+
+  // 3️⃣ PayPal button for Join page
+  const subscribeBtn = document.getElementById("subscribe-btn");
+  if (subscribeBtn) {
     subscribeBtn.addEventListener("click", () => {
       const container = document.getElementById("paypal-container-join");
-
-      // Render PayPal button only once
       if (!container.classList.contains("paypal-loaded")) {
         paypal.HostedButtons({ hostedButtonId: "N39GYUNMQHBKQ" })
           .render(`#paypal-container-join`);
         container.classList.add("paypal-loaded");
       }
-
-      // Show PayPal container
       container.classList.remove("paypal-hidden");
     });
+  }
+});
+</script>
 
-    // 3️⃣ Optional: simulate purchase for testing
-    // After successful payment, set login state:
-    // localStorage.setItem("isLoggedIn", "true");
-    // localStorage.setItem("userEmail", "user@email.com");
-    // window.location.href = "profile.html";
-  </script>
 
   <script src="js/main.js"></script>
 

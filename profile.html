@@ -9,12 +9,19 @@
 </head>
 <body>
   <header>
-    <nav class="navbar">
-      <a href="index.html" class="logo">JM THE GENIUS</a>
-      <ul class="nav-links" id="nav-links">
-        <!-- Links will be injected by JS -->
-      </ul>
+    <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
+
+    <!-- Dynamic nav bar -->
+    <nav class="nav-links" id="nav-links">
+      <!-- Links injected by JS -->
     </nav>
+
+    <!-- Hamburger button -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </header>
 
   <main class="profile-container">
@@ -44,39 +51,66 @@
   </footer>
 
   <script>
-    // 1️⃣ Check login status
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const navLinks = document.getElementById("nav-links");
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.getElementById("nav-links");
+  const hamburger = document.querySelector('.hamburger');
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-    if (!isLoggedIn) {
-      // Not logged in → redirect to join
-      window.location.href = "join.html";
-    } else {
-      // Logged in → populate nav
-      navLinks.innerHTML = `
-        <li><a href="index.html">Home</a></li>
-        <li><a href="music.html">Music</a></li>
-        <li><a href="merch.html">Merch</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="profile.html" class="active">Profile</a></li>
-        <li><a href="#" id="logout-btn">Log Out</a></li>
-      `;
+  // Redirect guests if needed (only for pages requiring login)
+  const protectedPages = ['profile.html', 'music.html', 'merch.html'];
+  const currentPage = window.location.pathname.split('/').pop();
+  if (!isLoggedIn && protectedPages.includes(currentPage)) {
+    window.location.href = 'join.html';
+    return; // stop further execution
+  }
 
-      // Display stored email (if any)
-      const userEmail = localStorage.getItem("userEmail") || "user@email.com";
-      document.getElementById("user-email").textContent = `Email: ${userEmail}`;
-    }
+  // Populate nav dynamically
+  if (isLoggedIn) {
+    navLinks.innerHTML = `
+      <a href="music.html">Music</a>
+      <a href="merch.html">Merch</a>
+      <a href="about.html">About</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout-btn">Log Out</a>
+    `;
 
-    // 2️⃣ Logout functionality
+    // Logout functionality
     const logoutBtn = document.getElementById("logout-btn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("userEmail");
-        window.location.href = "index.html";
-      });
-    }
-  </script>
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "index.html";
+    });
+
+  } else {
+    navLinks.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="join.html">Music</a>
+      <a href="join.html">Merch</a>
+      <a href="about.html">About</a>
+      <a href="join.html">Join</a>
+      <a href="login.html">Login</a>
+    `;
+  }
+
+  // Hamburger toggle for mobile
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    // Close mobile menu when a link is clicked
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navLinks.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  }
+});
+</script>
+
+
 
   <script src="js/main.js"></script>
 
