@@ -1,4 +1,5 @@
 // ======= MAIN JS =======
+console.log("main.js is running ✅");
 
 // NAVIGATION TOGGLE FOR MOBILE
 const navToggle = document.querySelector('.nav-toggle');

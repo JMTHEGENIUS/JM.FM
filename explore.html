@@ -14,19 +14,15 @@
 </head>
 <body>
 
-  <header>
-    <!-- Added logo class -->
+ <header>
     <h1><a href="index.html" style="text-decoration:none; color:inherit;">JM THE GENIUS</a></h1>
-    <nav class="nav-links">
-      <a href="explore.html" class="active">Explore</a>
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="join.html">Join</a>
-      <a href="profile.html">Profile</a>
+
+    <!-- Dynamic nav bar -->
+    <nav class="nav-links" id="nav-links">
+      <!-- Links injected by JS -->
     </nav>
 
-    <!-- Hamburger -->
+    <!-- Hamburger button -->
     <div class="hamburger">
       <span></span>
       <span></span>
@@ -36,7 +32,7 @@
 
   <section class="welcome">
     <h2>Welcome Inside</h2>
-    <p>You’ve entered the JM.FM world — your hub for music, merch, and exclusive experiences. Choose your path:</p>
+    <p>You’ve entered the world of the GENIUS — your hub for music, merch, and exclusive experiences. Choose your path:</p>
   </section>
 
   <section class="hub">
@@ -58,8 +54,8 @@
     <!-- About Card -->
     <div class="hub-card">
       <h3>🌌 About</h3>
-      <p>Learn about JM The Genius, the vision behind JM.FM, and the journey so far.</p>
-      <a href="about.html" class="btn">Discover The Genius</a>
+      <p>Learn about JM The Genius, the <strong>VIZION</strong>, and the journey so far.</p>
+      <a href="about.html" class="hub-btn">Discover The Genius</a>
     </div>
 
   </section>
@@ -68,7 +64,60 @@
     <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
 
-  <script src="main.js"></script>
+  <!-- Dynamic nav bar script -->
+  <script>
+    const navLinks = document.getElementById("nav-links");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (isLoggedIn) {
+      // Logged-in users see Profile + Logout, Music/Merch go to actual pages
+      navLinks.innerHTML = `
+        <a href="music.html">Music</a>
+        <a href="merch.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="profile.html">Profile</a>
+        <a href="#" id="logout-btn">Log Out</a>
+      `;
+
+      // Logout functionality
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "index.html";
+      });
+
+    } else {
+      // Logged-out users see Join + Login, Music/Merch redirect to join
+      navLinks.innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="join.html">Music</a>
+        <a href="join.html">Merch</a>
+        <a href="about.html">About</a>
+        <a href="join.html">Join</a>
+        <a href="login.html">Login</a>
+      `;
+    }
+  </script>
+
+  <!-- Hamburger menu script -->
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    // Close nav menu on link click (mobile)
+    nav.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A') {
+        nav.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  </script>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
 
