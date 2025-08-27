@@ -24,20 +24,14 @@ navLinks.forEach(link => {
   });
 });
 
-
 // CLICK LOGO TO GO HOME
 const logo = document.querySelector('.logo');
-
 if (logo) {
   logo.addEventListener('click', () => {
-    // Get current folder depth
     const pathParts = window.location.pathname.split('/');
     const currentPage = pathParts[pathParts.length - 1];
-
-    // If we are not already on index.html, redirect to it
     if (currentPage !== 'index.html' && currentPage !== '') {
-      // Adjust path for subfolders if needed
-      window.location.href = '/index.html'; // <-- change this if your homepage is elsewhere
+      window.location.href = '/index.html';
     }
   });
 }
@@ -54,40 +48,10 @@ anchorLinks.forEach(link => {
   });
 });
 
-// simulation
-const loginBtn = document.getElementById('login-btn');
-
-if (loginBtn) {
-  loginBtn.addEventListener('click', () => {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    // Example: just simulate success if both fields are filled
-    if (username && password) {
-      alert(`Logged in as ${username}`);
-      // Store user info in localStorage so it "remembers" login
-      localStorage.setItem('loggedInUser', username);
-
-      // Optionally hide login form and show profile link
-      document.getElementById('login-section').style.display = 'none';
-      document.querySelector('nav').innerHTML += `<a href="profile.html">Profile</a>`;
-    } else {
-      alert('Please enter username and password');
-    }
-  });
-}
-// log out
-const logoutBtn = document.getElementById('logout-btn');
-
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('loggedInUser');
-    alert('Logged out');
-    location.reload(); // refresh page to show login again
-  });
-}
-
+// ======= HUB BUTTON ACCESS CONTROL =======
+// Keeps guests from accessing Music/Merch directly
 document.addEventListener('DOMContentLoaded', () => {
+  // Retrieve user status (guest, loggedIn, paid)
   function getUserStatus() {
     return localStorage.getItem('userStatus') || 'guest';
   }
@@ -115,3 +79,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ======= YOUR EXISTING TEST LOGIN FUNCTION =======
+// Leave your join page test functions here as-is
+const loginBtn = document.getElementById('login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    if (username && password) {
+      alert(`Logged in as ${username}`);
+      localStorage.setItem('loggedInUser', username);
+      document.getElementById('login-section').style.display = 'none';
+      document.querySelector('nav').innerHTML += `<a href="profile.html">Profile</a>`;
+    } else {
+      alert('Please enter username and password');
+    }
+  });
+}
+
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('loggedInUser');
+    alert('Logged out');
+    location.reload();
+  });
+}
+
