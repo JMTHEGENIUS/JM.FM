@@ -205,7 +205,7 @@ footer {
 }
 
 /* Mobile */
-@media(max-width: 768px){
+@media(max-width: 100%){
   .video-row {
     flex-direction: column;
     gap: 1.5rem;
@@ -213,6 +213,6 @@ footer {
   }
   .video-card {
     flex: none;
-    width: 50%;
+    width: 100%;
   }
 }
