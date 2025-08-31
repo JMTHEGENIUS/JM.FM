@@ -124,6 +124,9 @@ main {
 /* Merch Preview */
 .merch-preview {
   margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .merch-preview h3 {
@@ -131,22 +134,44 @@ main {
   margin-bottom: 20px;
 }
 
+/* Mockups container */
 .mockups {
   display: flex;
   justify-content: center;
   gap: 20px;
-  font-size: 4rem;
+  flex-wrap: wrap; /* wrap for mobile */
 }
 
+/* Each mockup box */
 .mockup {
-  width: 100px;
-  height: 100px;
+  width: 150px; /* bigger for desktop */
+  height: 150px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* centers vertically */
+  justify-content: center; /* centers horizontally */
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
+  overflow: hidden; /* makes object-fit cropping clean */
+  padding: 0; /* remove padding so image fills */
+  box-sizing: border-box;
 }
+
+.mockup img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills container, crops edges if needed */
+  display: block;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mockup {
+    width: 80px;
+    height: 80px;
+  }
+}
+
 
 /* Membership Section */
 .membership {
