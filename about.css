@@ -176,3 +176,12 @@ iframe {
   }
 }
 
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: #111;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 40px;
+}
