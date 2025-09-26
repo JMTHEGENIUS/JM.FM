@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Cycles Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="cycles-page">
+        <h1>Life Cycles Calendar</h1>
+        <p>Select a cycle below to explore its 7 weeks.</p>
+        
+        <div class="cycles-layout">
+            <!-- Fixed left description -->
+            <div class="cycle-description">
+                <h2>About the 7 Cycles</h2>
+                <p>
+                    The 365 days are divided into seven, 52-day periods. Here we have calculated
+                    your personal cycles starting from your birthday and divided the 365 days into
+                    groups of 52 days so you can easily understand and keep track of your cycles
+                    without having to manually count on your own.
+                </p>
+            </div>
+
+            <!-- Scrollable cycles grid -->
+            <section class="cycles-content">
+                <div class="honeycomb" id="cyclesContainer">
+                    <!-- JS will inject cycle boxes here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+
+

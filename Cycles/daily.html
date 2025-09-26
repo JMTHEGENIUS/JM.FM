@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily View</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="daily-container">
+    <h1>Life Cycles Calendar</h1>
+    <!-- Left column -->
+    <div class="daily-left">
+      <h2>Daily Energy</h2>
+      <div id="dailyInfo">
+        <p>Resonance of the day will appear here...</p>
+      </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="daily-right">
+      <!-- Large Calendar Box -->
+      <div class="calendar-box">
+        <div class="date-header" id="dailyTitle">July 17, 2025</div>
+        <div class="date-nav">
+          <button id="prevDay">&lt; Prev</button>
+          <span id="dailylesson">Daily Lesson</span>
+          <button id="nextDay">Next &gt;</button>
+        </div>
+      </div>
+
+      <!-- Journal with Prompt -->
+      <div class="journal-box">
+        <p><strong>Journal Prompt:</strong></p>
+        <p id="journalPrompt">What did I learn today?</p>
+        <textarea placeholder="Write your entry here..."></textarea>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
