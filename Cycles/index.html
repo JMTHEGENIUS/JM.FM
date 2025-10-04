@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <script>
+  const status = localStorage.getItem('userStatus');
+  if (status !== 'loggedIn') {
+    alert('You must be a paid member to access the Cycles app.');
+    window.location.href = '/join.html';
+  }
+</script>
+
     <div class="container">
         <h1>Life Cycles Calendar</h1>
 
@@ -29,6 +38,12 @@
 </div>
 
     </div>
+
+    <footer id="timelineContainer">
+  <div id="timelineBar"></div>
+  <div id="timelineMarker" title="Go to current">⬤</div>
+</footer>
+
 
     <script src="script.js"></script>
 </body>

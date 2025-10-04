@@ -479,3 +479,104 @@ body {
 }
 
 
+/* Birthday box styling */
+.birthday-box {
+  background: linear-gradient(135deg, gold, orange);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 12px gold;
+}
+
+
+/* footer styling for timeline */
+#timelineContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+#timelineScroller {
+  width: 100%;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* hide scrollbar in Firefox */
+}
+
+#timelineScroller::-webkit-scrollbar {
+  display: none; /* hide scrollbar in Chrome/Safari */
+}
+
+/* #timelineLine {
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+} */
+
+#timelineBar {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  padding: 30px;
+  width: max-content;
+  position: relative;
+}
+
+.timeline-node {
+  position: relative;
+  z-index: 2;
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.timeline-node.active {
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 0 20px rgba(255,255,255,0.4);
+  transform: scale(1.1);
+}
+
+#timelineSelector {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 30px;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
+  z-index: 3;
+}
+
+#cycles-btn.locked {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}

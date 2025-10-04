@@ -111,3 +111,27 @@ if (logoutBtn) {
   });
 }
 
+// ======= CYCLES APP ACCESS CONTROL =======
+
+const cyclesBtn = document.getElementById('cycles-btn');
+
+if (cyclesBtn) {
+  cyclesBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const status = getUserStatus();
+    console.log('Cycles click status:', status);
+
+    if (status === 'guest') {
+      // Guest visitors — not subscribed or logged in
+      window.location.href = 'join.html';
+    } 
+    else if (status === 'paid') {
+      // Paid but not logged in yet (you might adjust this later)
+      window.location.href = 'login.html';
+    } 
+    else if (status === 'loggedIn') {
+      // Fully logged in — grant access
+      window.location.href = 'cycles/index.html';
+    }
+  });
+}

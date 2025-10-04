@@ -8,24 +8,35 @@ if (generateBtn) {
             return;
         }
 
-        // Parse birthday with explicit noon time
+        // Parse birthday as local date (explicit noon avoids timezone shift)
         const birthDate = new Date(birthdayStr + "T12:00:00");
         const today = new Date();
 
-        // Most recent birthday calculation
+        // --- Find most recent birthday ---
         let recentBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate(), 12, 0, 0);
         if (recentBirthday > today) {
             recentBirthday.setFullYear(today.getFullYear() - 1);
         }
 
-        // Save
+        // 🌞 NEW: The cycles begin the day AFTER the birthday
+        const cycleStart = new Date(recentBirthday);
+        cycleStart.setDate(cycleStart.getDate() + 1); // Dec 1 if birthday = Nov 30
+
+        // 🌝 NEW: The cycles end 364 days later (the day before next birthday)
+        const cycleEnd = new Date(cycleStart);
+        cycleEnd.setDate(cycleEnd.getDate() + 363); // inclusive 364-day span
+
+        // Save all relevant data
         localStorage.setItem('birthday', birthdayStr);
         localStorage.setItem('recentBirthday', recentBirthday.toISOString());
+        localStorage.setItem('cycleStart', cycleStart.toISOString());
+        localStorage.setItem('cycleEnd', cycleEnd.toISOString());
 
         // Navigate to cycles page
         window.location.href = 'cycles.html';
     });
 }
+
 
 // === ALL OTHER PAGES ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,6 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recentBirthday = new Date(recentBirthdayStr);
 
+    const cycleStartStr = localStorage.getItem('cycleStart');
+    const cycleStart = new Date(cycleStartStr);
+
+
     // --- CYCLES PAGE ---
     const cyclesContainer = document.getElementById('cyclesContainer');
     if (cyclesContainer) {
@@ -41,14 +56,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const tarot = ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Hierophant", "The Lovers"];
         const diamondOrder = [0, 2, 1, 3, 5, 4, 6]; // diamond layout
 
+        // Birthday highlight
+        const birthdayHighlight = document.createElement('div');
+        birthdayHighlight.classList.add('cycle-box', 'birthday-box');
+        birthdayHighlight.innerHTML = `
+         <h2>🎂 Birthday</h2>
+         <p>${recentBirthday.toLocaleDateString()}</p>
+         <p>This is your solar reset — the 365th day, completing your cycle year.</p>
+         `;
+        cyclesContainer.appendChild(birthdayHighlight);
+
+
         diamondOrder.forEach(i => {
             const startDayNum = i * 52 + 1;
             const endDayNum = (i + 1) * 52;
 
-            const startDate = new Date(recentBirthday);
-            startDate.setDate(startDate.getDate() + (startDayNum - 1));
-            const endDate = new Date(recentBirthday);
-            endDate.setDate(endDate.getDate() + (endDayNum - 1));
+            // Use cycleStart as the true day 1 of the cycle calendar
+            const startDate = new Date(cycleStart);
+             startDate.setDate(startDate.getDate() + (startDayNum - 1));
+            const endDate = new Date(cycleStart);
+             endDate.setDate(endDate.getDate() + (endDayNum - 1));
+
 
             const div = document.createElement('div');
             div.classList.add("cycle-box");
@@ -240,7 +268,15 @@ if (document.getElementById('dailyTitle')) {
     const cycleNumber = parseInt(localStorage.getItem('cycle')) || 1;
     const weekNumber = parseInt(localStorage.getItem('week')) || 1;
     const weekStart = parseInt(localStorage.getItem('weekStart')) || 1;
-    const recentBirthday = new Date(localStorage.getItem('recentBirthday')) || new Date();
+
+    // Use cycleStart instead of recentBirthday to align with new logic
+    const cycleStartStr = localStorage.getItem('cycleStart');
+    const cycleStart = cycleStartStr ? new Date(cycleStartStr) : new Date();
+
+    // Also pull the true birthday for display if needed
+    const birthdayStr = localStorage.getItem('birthday');
+    const birthday = birthdayStr ? new Date(birthdayStr + "T12:00:00") : null;
+
 
     // Example dailyData object - expand with your actual data
     const dailyData = [
@@ -259,8 +295,10 @@ if (document.getElementById('dailyTitle')) {
         currentDay = n;
 
         const globalDay = weekStart + (n - 1);
-        const date = new Date(recentBirthday);
+        // Calculate date based on true cycle start (the day after the birthday)
+        const date = new Date(cycleStart);
         date.setDate(date.getDate() + (globalDay - 1));
+
 
         const weekday = date.getDay();
         const info = dailyData[weekday];
@@ -298,6 +336,21 @@ if (document.getElementById('dailyTitle')) {
 
     // Render the first day by default
     renderDay(currentDay);
+
+    // Highlight if today = birthday
+if (
+  birthday &&
+  date.getDate() === birthday.getDate() &&
+  date.getMonth() === birthday.getMonth()
+) {
+  document.getElementById('dailylesson').textContent = "🎂 Birthday — Solar Reset Day! Reflect on your growth and set new intentions.";
+  document.getElementById('dailyInfo').innerHTML = `
+      <h3>Birthday Reflections</h3>
+      <p>This is your 365th day — completing one full solar year.</p>
+      <p>Take time to review your cycles and celebrate renewal.</p>
+  `;
+}
+
 }
 
 });
@@ -324,3 +377,209 @@ document.querySelectorAll('#weeksContainer .week-box').forEach((box, index) => {
 
 // Optional: show cycle 1 by default when page loads
 showCycleDescription(1);
+
+
+const cycleColors = [
+  "#FFD700", // Sun - Gold
+  "#F56F00", // Moon - Orange
+  "#C13EFF", // Mars - Purple
+  "#00CFFF", // Mercury - Light Blue
+  "#00FF90", // Jupiter - Green
+  "#FF4B91", // Venus - Pink
+  "#7080FF"  // Saturn - Indigo
+];
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bar = document.getElementById("timelineBar");
+  const marker = document.getElementById("timelineMarker");
+  if (!bar || !marker) return;
+
+  const page = document.body.dataset.page; // we'll tag each page type
+  const colors = [
+    "#FFD700","#F56F00","#C13EFF","#00CFFF",
+    "#00FF90","#FF4B91","#7080FF"
+  ];
+
+  const cycleStart = new Date(localStorage.getItem("cycleStart"));
+  const today = new Date();
+
+  const dayOfYear = Math.floor((today - cycleStart) / (1000*60*60*24));
+  const currentCycle = Math.floor(dayOfYear / 52);  // 0–6
+  const currentWeek = Math.floor(dayOfYear / 7) % 7; // 0–6 inside current cycle
+  const currentDay = dayOfYear % 7; // 0–6 inside week
+
+  // Helper: create colored segment bar
+  function renderSegments(total, activeIndex) {
+    bar.innerHTML = "";
+    for (let i = 0; i < total; i++) {
+      const seg = document.createElement("div");
+      seg.className = "timeline-segment";
+      seg.style.background = colors[i % colors.length];
+      if (i === activeIndex) seg.classList.add("active");
+      bar.appendChild(seg);
+    }
+  }
+
+  if (page === "cycles") {
+    renderSegments(7, currentCycle);
+    marker.textContent = "Cycle " + (currentCycle + 1);
+    marker.onclick = () => window.location.href = "weeks.html";
+  }
+
+  if (page === "weeks") {
+    renderSegments(7, currentWeek);
+    marker.textContent = "Week " + (currentWeek + 1);
+    marker.onclick = () => window.location.href = "daily.html";
+  }
+
+  if (page === "daily") {
+    renderSegments(7, currentDay);
+    marker.textContent = "Today";
+    marker.onclick = () => window.location.href = "daily.html";
+  }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const scroller = document.getElementById("timelineScroller");
+  const bar = document.getElementById("timelineBar");
+  const marker = document.getElementById("timelineMarker");
+  if (!scroller || !bar || !marker) return;
+
+  const page = document.body.dataset.page; // "cycles" | "weeks" | "daily"
+  const colors = [
+    "#FFD700", // Sun
+    "#F56F00", // Moon
+    "#C13EFF", // Mars
+    "#00CFFF", // Mercury
+    "#00FF90", // Jupiter
+    "#FF4B91", // Venus
+    "#7080FF"  // Saturn
+  ];
+
+  // Calculate temporal position
+  const cycleStart = new Date(localStorage.getItem("cycleStart"));
+  const today = new Date();
+  const dayOfYear = Math.floor((today - cycleStart) / (1000 * 60 * 60 * 24));
+
+  const currentCycle = Math.floor(dayOfYear / 52); // 0–6
+  const currentWeek = Math.floor(dayOfYear / 7);  // 0–51
+  const currentDay = dayOfYear % 7;               // 0–6
+
+  let totalSegments, activeIndex, label;
+
+  if (page === "cycles") {
+    totalSegments = 7;
+    activeIndex = currentCycle;
+    label = "Cycle " + (currentCycle + 1);
+  } else if (page === "weeks") {
+    totalSegments = 52;
+    activeIndex = currentWeek;
+    label = "Week " + (currentWeek + 1);
+  } else {
+    totalSegments = 7;
+    activeIndex = currentDay;
+    label = "Today";
+  }
+
+  // Render segments
+  bar.innerHTML = "";
+  for (let i = 0; i < totalSegments; i++) {
+    const seg = document.createElement("div");
+    seg.className = "timeline-segment";
+    seg.style.background = colors[i % colors.length];
+    if (i === activeIndex) seg.classList.add("active");
+
+    // Clicking a segment moves to that page scope
+    seg.addEventListener("click", () => {
+      if (page === "cycles") {
+        localStorage.setItem("cycle", i + 1);
+        window.location.href = "weeks.html";
+      } else if (page === "weeks") {
+        localStorage.setItem("week", i + 1);
+        window.location.href = "daily.html";
+      } else {
+        localStorage.setItem("selectedDay", i + 1);
+        window.location.href = "daily.html";
+      }
+    });
+
+    bar.appendChild(seg);
+  }
+
+  // Label marker
+  marker.textContent = label;
+  marker.onclick = () => {
+    if (page === "cycles") window.location.href = "weeks.html";
+    else if (page === "weeks") window.location.href = "daily.html";
+    else window.location.href = "daily.html";
+  };
+
+  // Scroll to center the active segment
+  setTimeout(() => {
+    const active = bar.children[activeIndex];
+    if (active) {
+      const scrollCenter = active.offsetLeft - scroller.offsetWidth / 2 + active.offsetWidth / 2;
+      scroller.scrollTo({ left: scrollCenter, behavior: "smooth" });
+    }
+  }, 200);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const scroller = document.getElementById("timelineScroller");
+  const bar = document.getElementById("timelineBar");
+  const selector = document.getElementById("timelineSelector");
+  if (!scroller || !bar || !selector) return;
+
+  const totalCycles = 7;
+  bar.innerHTML = "";
+
+  for (let i = 1; i <= totalCycles; i++) {
+    const node = document.createElement("div");
+    node.className = "timeline-node";
+    node.textContent = `Cycle ${i}`;
+    bar.appendChild(node);
+  }
+
+  let scrollTimeout;
+
+  function highlightNearestNode() {
+    const nodes = [...bar.children];
+    const selectorRect = selector.getBoundingClientRect();
+    let closest = null;
+    let minDist = Infinity;
+
+    nodes.forEach((node, index) => {
+      const rect = node.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      const dist = Math.abs(center - selectorRect.left - selectorRect.width / 2);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = index;
+      }
+    });
+
+    nodes.forEach((n, i) => n.classList.toggle("active", i === closest));
+
+    // Optionally: auto-snap to center
+    const targetNode = nodes[closest];
+    const targetCenter = targetNode.offsetLeft + targetNode.offsetWidth / 2;
+    const scrollTo = targetCenter - scroller.offsetWidth / 2;
+    scroller.scrollTo({ left: scrollTo, behavior: "smooth" });
+
+    // Save selection or trigger logic
+    localStorage.setItem("selectedCycle", closest + 1);
+  }
+
+  scroller.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(highlightNearestNode, 150);
+  });
+
+  highlightNearestNode();
+});
+
+if (cyclesBtn && getUserStatus() === 'guest') {
+  cyclesBtn.classList.add('locked');
+}
