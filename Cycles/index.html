@@ -8,13 +8,14 @@
 </head>
 <body>
 
-  <script>
+ <script>
   const status = localStorage.getItem('userStatus');
-  if (status === 'guest') {
+  if (status !== 'paid' && status !== 'loggedIn') {
     alert('You must be a paid member to access the Cycles app.');
     window.location.href = '/join.html';
   }
 </script>
+
 
 
     <div class="container">
