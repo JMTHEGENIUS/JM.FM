@@ -10,11 +10,12 @@
 
   <script>
   const status = localStorage.getItem('userStatus');
-  if (status !== 'loggedIn') {
+  if (status === 'guest') {
     alert('You must be a paid member to access the Cycles app.');
     window.location.href = '/join.html';
   }
 </script>
+
 
     <div class="container">
         <h1>Life Cycles Calendar</h1>
