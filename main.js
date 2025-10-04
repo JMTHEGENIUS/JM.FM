@@ -122,16 +122,11 @@ if (cyclesBtn) {
     console.log('Cycles click status:', status);
 
     if (status === 'guest') {
-      // Guest visitors — not subscribed or logged in
       window.location.href = 'join.html';
-    } 
-    else if (status === 'paid') {
-      // Paid but not logged in yet (you might adjust this later)
-      window.location.href = 'login.html';
-    } 
-    else if (status === 'loggedIn') {
-      // Fully logged in — grant access
+    } else {
       window.location.href = 'cycles/index.html';
     }
   });
 }
+
+

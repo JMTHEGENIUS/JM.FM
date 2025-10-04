@@ -8,16 +8,16 @@
 </head>
 <body>
 
- <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const status = localStorage.getItem('userStatus');
-    console.log('Cycles page status:', status); // debug line
-    if (status !== 'loggedIn') {
-      alert('You must be a paid member to access the Cycles app.');
-      window.location.href = '/join.html';
-    }
-  });
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const status = localStorage.getItem('userStatus');
+  console.log('Cycles page status:', status); // debug
+  if (status !== 'paid' && status !== 'loggedIn') {
+    window.location.href = '../join.html'; // adjust path if needed
+  }
+});
 </script>
+
 
 
 
