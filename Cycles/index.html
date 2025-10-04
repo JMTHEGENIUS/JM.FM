@@ -9,12 +9,16 @@
 <body>
 
  <script>
-  const status = localStorage.getItem('userStatus');
-  if (status !== 'paid' && status !== 'loggedIn') {
-    alert('You must be a paid member to access the Cycles app.');
-    window.location.href = '/join.html';
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const status = localStorage.getItem('userStatus');
+    console.log('Cycles page status:', status); // debug line
+    if (status !== 'loggedIn') {
+      alert('You must be a paid member to access the Cycles app.');
+      window.location.href = '/join.html';
+    }
+  });
 </script>
+
 
 
 
