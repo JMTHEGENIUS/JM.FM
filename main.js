@@ -90,25 +90,25 @@ if (loginBtn) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     if (username && password) {
-      alert(`Logged in as ${username}`);
       localStorage.setItem('loggedInUser', username);
-      localStorage.setItem('userStatus', 'loggedIn'); // ← important
-      document.getElementById('login-section').style.display = 'none';
-      document.querySelector('nav').innerHTML += `<a href="profile.html">Profile</a>`;
+      localStorage.setItem('userStatus', 'loggedIn');
+      // redirect to profile page immediately
+      window.location.href = 'profile.html';
     } else {
       alert('Please enter username and password');
     }
   });
 }
 
+
 const logoutBtn = document.getElementById('logout-btn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('loggedInUser');
-    localStorage.setItem('userStatus', 'guest'); // ← reset status
-    alert('Logged out');
-    location.reload();
-  });
+  localStorage.removeItem("loggedInUser");
+  localStorage.setItem("userStatus", "guest"); // ← reset userStatus
+  window.location.href = "index.html";
+});
+
 }
 
 // ======= CYCLES APP ACCESS CONTROL =======
