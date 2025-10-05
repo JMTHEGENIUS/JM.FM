@@ -55,69 +55,18 @@
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const navLinks = document.getElementById("nav-links");
-  const hamburger = document.querySelector('.hamburger');
   const loggedIn = localStorage.getItem("userStatus") === "loggedIn";
+  const username = localStorage.getItem("loggedInUser") || "Guest";
 
+  // Redirect guests
+  if (!loggedIn) window.location.href = 'join.html';
 
-  // Redirect guests if needed (only for pages requiring login)
- const protectedPages = ['profile.html', 'music.html', 'merch.html'];
-const currentPage = window.location.pathname.split('/').pop();
-if (!loggedIn && protectedPages.includes(currentPage)) {
-  window.location.href = 'join.html';
-  return; // stop further execution
-}
-
-
-  // Populate nav dynamically
-  if (loggedIn) {
-    navLinks.innerHTML = `
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="profile.html">Profile</a>
-      <a href="#" id="logout-btn">Log Out</a>
-    `;
-
-    // Logout functionality
-    const logoutBtn = document.getElementById("logout-btn");
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem("loggedIn");
-      window.location.href = "index.html";
-    });
-
-  } else {
-    navLinks.innerHTML = `
-      <a href="index.html">Home</a>
-      <a href="join.html">Music</a>
-      <a href="join.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="join.html">Join</a>
-      <a href="login.html">Login</a>
-    `;
-  }
-
-  // Hamburger toggle for mobile
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('nav-active');
-      hamburger.classList.toggle('toggle');
-    });
-
-    // Close mobile menu when a link is clicked
-    navLinks.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        navLinks.classList.remove('nav-active');
-        hamburger.classList.remove('toggle');
-      }
-    });
-  }
+  // Fill username
+  document.getElementById('user-name').textContent = username;
 });
 </script>
+<script src="js/main.js"></script>
 
-
-
-  <script src="js/main.js"></script>
 
 </body>
 </html>

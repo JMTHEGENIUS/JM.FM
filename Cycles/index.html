@@ -10,15 +10,14 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const status = localStorage.getItem('userStatus');
-  console.log('Cycles page status:', status);
-
-  if (status !== 'loggedIn') {
+  if (localStorage.getItem('userStatus') !== 'loggedIn') {
     alert('You must be a paid member to access the Cycles app.');
     window.location.href = '/join.html';
   }
 });
 </script>
+<script src="js/main.js"></script>
+
 
 
 

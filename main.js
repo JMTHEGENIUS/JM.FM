@@ -35,7 +35,7 @@ function getUserStatus() {
   return localStorage.getItem('userStatus') || 'guest';
 }
 
-function loggedIn() {
+function oggedIn() {
   return getUserStatus() === 'loggedIn';
 }
 
