@@ -124,7 +124,7 @@ if (cyclesBtn) {
     if (status === 'guest') {
       window.location.href = 'join.html';
     } else {
-      window.location.href = 'cycles/index.html';
+      window.location.href = 'Cycles/index.html';
     }
   });
 }
