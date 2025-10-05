@@ -10,19 +10,12 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Only redirect guests — remove paid check
   if (localStorage.getItem('userStatus') !== 'loggedIn') {
-    alert('You must be a paid member to access the Cycles app.');
     window.location.href = '/join.html';
   }
 });
 </script>
-<script src="js/main.js"></script>
-
-
-
-
-
-
 
 
     <div class="container">
