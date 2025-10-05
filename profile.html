@@ -57,7 +57,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.getElementById("nav-links");
   const hamburger = document.querySelector('.hamburger');
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
   // Redirect guests if needed (only for pages requiring login)
   const protectedPages = ['profile.html', 'music.html', 'merch.html'];
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout functionality
     const logoutBtn = document.getElementById("logout-btn");
     logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("loggedIn");
       window.location.href = "index.html";
     });
 
