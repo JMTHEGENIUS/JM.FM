@@ -11,15 +11,15 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const status = localStorage.getItem('userStatus');
-  console.log('Cycles page status:', status); // debug line
+  console.log('Cycles page status:', status);
 
-  // Only redirect if not logged in
   if (status !== 'loggedIn') {
     alert('You must be a paid member to access the Cycles app.');
-    window.location.replace('/join.html'); // <-- root-level path
+    window.location.href = '/join.html';
   }
 });
 </script>
+
 
 
 

@@ -1,25 +1,23 @@
-// ======= MAIN JS =======
 console.log("main.js is running ✅");
 
-// ======= MOBILE NAV TOGGLE =======
+// ===== MOBILE NAV TOGGLE =====
 const navToggle = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-links');
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active'); // match CSS: .nav-links.active
-    navToggle.classList.toggle('toggle'); // animate hamburger
+    navMenu.classList.toggle('nav-active');
+    navToggle.classList.toggle('toggle');
   });
 }
 
 // CLOSE MOBILE MENU WHEN LINK IS CLICKED
-const navLinks = document.querySelectorAll('.nav-links a');
-
-navLinks.forEach(link => {
+const navLinksList = document.querySelectorAll('.nav-links a');
+navLinksList.forEach(link => {
   link.addEventListener('click', () => {
-    if (navMenu.classList.contains('active')) {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('toggle'); // reset hamburger
+    if (navMenu.classList.contains('nav-active')) {
+      navMenu.classList.remove('nav-active');
+      navToggle.classList.remove('toggle');
     }
   });
 });
@@ -28,62 +26,20 @@ navLinks.forEach(link => {
 const logo = document.querySelector('.logo');
 if (logo) {
   logo.addEventListener('click', () => {
-    const pathParts = window.location.pathname.split('/');
-    const currentPage = pathParts[pathParts.length - 1];
-    if (currentPage !== 'index.html' && currentPage !== '') {
-      window.location.href = '/index.html';
-    }
+    window.location.href = '/index.html';
   });
 }
 
-// OPTIONAL: Smooth scroll for anchor links
-const anchorLinks = document.querySelectorAll('a[href^="#"]');
-anchorLinks.forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
-
-// ======= HUB BUTTON ACCESS CONTROL =======
-// Keeps guests from accessing Music/Merch directly
-
+// ===== LOGIN HELPERS =====
 function getUserStatus() {
   return localStorage.getItem('userStatus') || 'guest';
 }
 
-const musicBtn = document.getElementById('music-btn');
-const merchBtn = document.getElementById('merch-btn');
-
-if (musicBtn) {
-  musicBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const status = getUserStatus();
-    console.log('Music click status:', status); // debug
-    if (status === 'guest') window.location.href = 'join.html';
-    else if (status === 'paid') window.location.href = 'login.html';
-    else if (status === 'loggedIn') window.location.href = 'music.html';
-  });
+function isLoggedIn() {
+  return getUserStatus() === 'loggedIn';
 }
 
-if (merchBtn) {
-  merchBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const status = getUserStatus();
-    console.log('Merch click status:', status); // debug
-    if (status === 'guest') window.location.href = 'join.html';
-    else if (status === 'paid') window.location.href = 'login.html';
-    else if (status === 'loggedIn') window.location.href = 'merch.html';
-  });
-}
-
-
-
-// ======= YOUR EXISTING TEST LOGIN FUNCTION =======
-// Leave your join page test functions here as-is
+// ===== TEST LOGIN =====
 const loginBtn = document.getElementById('login-btn');
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
@@ -92,7 +48,6 @@ if (loginBtn) {
     if (username && password) {
       localStorage.setItem('loggedInUser', username);
       localStorage.setItem('userStatus', 'loggedIn');
-      // redirect to profile page immediately
       window.location.href = 'profile.html';
     } else {
       alert('Please enter username and password');
@@ -100,33 +55,83 @@ if (loginBtn) {
   });
 }
 
-
+// ===== LOGOUT =====
 const logoutBtn = document.getElementById('logout-btn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem("loggedInUser");
-  localStorage.setItem("userStatus", "guest"); // ← reset userStatus
-  window.location.href = "index.html";
-});
-
-}
-
-// ======= CYCLES APP ACCESS CONTROL =======
-
-const cyclesBtn = document.getElementById('cycles-btn');
-
-if (cyclesBtn) {
-  cyclesBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const status = getUserStatus();
-    console.log('Cycles click status:', status);
-
-    if (status === 'guest') {
-      window.location.href = 'join.html';
-    } else {
-      window.location.href = '/Cycles/index.html';
-    }
+    localStorage.removeItem('loggedInUser');
+    localStorage.setItem('userStatus', 'guest');
+    window.location.href = 'index.html';
   });
 }
 
+// ===== HUB BUTTON ACCESS =====
+const musicBtn = document.getElementById('music-btn');
+const merchBtn = document.getElementById('merch-btn');
+const cyclesBtn = document.getElementById('cycles-btn');
 
+function handleHubRedirect(btn, page) {
+  if (!btn) return;
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const status = getUserStatus();
+    if (status === 'guest') window.location.href = 'join.html';
+    else window.location.href = page;
+  });
+}
+
+handleHubRedirect(musicBtn, 'music.html');
+handleHubRedirect(merchBtn, 'merch.html');
+handleHubRedirect(cyclesBtn, '/Cycles/index.html');
+
+// ===== NAVBAR DYNAMIC RENDER =====
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinksContainer = document.getElementById('nav-links');
+  const hamburger = document.querySelector('.hamburger');
+  if (!navLinksContainer) return;
+
+  if (isLoggedIn()) {
+    navLinksContainer.innerHTML = `
+      <a href="music.html">Music</a>
+      <a href="merch.html">Merch</a>
+      <a href="about.html">About</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logout-btn">Log Out</a>
+    `;
+
+    // Reattach logout after dynamic nav
+    const logoutBtnNew = document.getElementById("logout-btn");
+    if (logoutBtnNew) {
+      logoutBtnNew.addEventListener('click', () => {
+        localStorage.removeItem('loggedInUser');
+        localStorage.setItem('userStatus', 'guest');
+        window.location.href = 'index.html';
+      });
+    }
+
+  } else {
+    navLinksContainer.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="join.html">Music</a>
+      <a href="join.html">Merch</a>
+      <a href="about.html">About</a>
+      <a href="join.html">Join</a>
+      <a href="login.html">Login</a>
+    `;
+  }
+
+  // Hamburger toggle again
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      navLinksContainer.classList.toggle('nav-active');
+      hamburger.classList.toggle('toggle');
+    });
+
+    navLinksContainer.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navLinksContainer.classList.remove('nav-active');
+        hamburger.classList.remove('toggle');
+      }
+    });
+  }
+});
