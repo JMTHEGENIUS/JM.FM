@@ -35,7 +35,7 @@ function getUserStatus() {
   return localStorage.getItem('userStatus') || 'guest';
 }
 
-function isLoggedIn() {
+function loggedIn() {
   return getUserStatus() === 'loggedIn';
 }
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.querySelector('.hamburger');
   if (!navLinksContainer) return;
 
-  if (isLoggedIn()) {
+  if (loggedIn()) {
     navLinksContainer.innerHTML = `
       <a href="music.html">Music</a>
       <a href="merch.html">Merch</a>
