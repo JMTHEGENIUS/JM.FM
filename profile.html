@@ -57,15 +57,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.getElementById("nav-links");
   const hamburger = document.querySelector('.hamburger');
-  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+  const isLoggedIn = localStorage.getItem("userStatus") === "loggedIn";
+
 
   // Redirect guests if needed (only for pages requiring login)
-  const protectedPages = ['profile.html', 'music.html', 'merch.html'];
-  const currentPage = window.location.pathname.split('/').pop();
-  if (!isLoggedIn && protectedPages.includes(currentPage)) {
-    window.location.href = 'join.html';
-    return; // stop further execution
-  }
+ const protectedPages = ['profile.html', 'music.html', 'merch.html'];
+const currentPage = window.location.pathname.split('/').pop();
+if (!isLoggedIn && protectedPages.includes(currentPage)) {
+  window.location.href = 'join.html';
+  return; // stop further execution
+}
+
 
   // Populate nav dynamically
   if (isLoggedIn) {
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout functionality
     const logoutBtn = document.getElementById("logout-btn");
     logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem("IsLoggedIn");
+      localStorage.removeItem("loggedIn");
       window.location.href = "index.html";
     });
 
