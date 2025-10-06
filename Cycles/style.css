@@ -188,10 +188,9 @@ body {
   max-width: 560px; /* keep it narrower so it doesn't overflow the column */
 }
 
-/* responsive: stack on small screens (description above grid) */
 @media (max-width: 800px) {
   .cycles-layout {
-    grid-template-columns: 1fr; /* single column */
+    grid-template-columns: 1fr; /* single column layout */
     gap: 12px;
     padding: 0 0.75rem;
   }
@@ -202,9 +201,29 @@ body {
     width: 100%;
   }
 
-  .cycles-content { grid-column: 1; }
-  .honeycomb { max-width: 100%; grid-template-columns: repeat(2, 1fr); }
+  .cycles-content {
+    grid-column: 1;
+  }
+
+  /* Make honeycomb grid flexible on mobile */
+  .honeycomb {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-auto-rows: 100px;
+    gap: 10px;
+    justify-items: center;
+    max-width: 100%;
+  }
+
+  .cycle-box {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+  }
 }
+
+
+
 
 /* Center title and subtitle on cycles page */
 .cycles-page h1,
@@ -316,20 +335,37 @@ body {
 /* Responsive: stack columns on small screens */
 @media (max-width: 800px) {
   .weeks-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;  /* stack description and content vertically */
     gap: 12px;
     padding: 0 0.75rem;
   }
 
   .weeks-description {
-    position: relative;
+    position: relative;  /* no sticky on mobile */
     top: 0;
     width: 100%;
   }
 
-  .weeks-content { grid-column: 1; }
-  .weeks-content .honeycomb { max-width: 100%; grid-template-columns: repeat(2, 1fr); }
+  .weeks-content {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .weeks-content .honeycomb {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* responsive grid */
+    grid-auto-rows: 100px;  /* maintain box height */
+    gap: 10px;
+    justify-items: center;
+    max-width: 100%;
+  }
+
+  .week-box {
+    width: 100%;       /* fill the grid cell */
+    min-height: 100px; /* ensure consistent height */
+  }
 }
+
 
 /* Center title/subtitle */
 .weeks-page h1,
@@ -477,6 +513,21 @@ body {
   resize: vertical;
   font-size: 1rem;
 }
+
+@media (max-width: 800px) {
+  .daily-container {
+    flex-direction: column;
+    align-items: center; /* center both columns */
+    padding: 1rem;
+  }
+
+  .daily-left, .daily-right {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
 
 
 /* Birthday box styling */
