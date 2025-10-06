@@ -41,17 +41,89 @@ body {
 
 
 
-/* === GRID FOR WEEKS === */
-.honeycomb, #weeksContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 70px;
-    gap: 5px;
-    justify-items: center;
-    margin: 2rem auto;
-    max-width: 480px;
-    z-index: 1; /* above lines */
-    position: relative;
+
+
+
+
+
+
+
+/* Center all content inside the main container */
+.container {
+    text-align: center;       /* center text and inline elements */
+    margin: 0 auto;           /* keep container centered */
+    padding: 2rem 1rem;       /* optional spacing */
+}
+
+/* Center the button and make it inline-block so margins work */
+#generateBtn {
+    display: inline-block;    /* allow centering and spacing */
+    margin: 1rem auto;        /* space above/below, center horizontally */
+    position: static;         /* remove top/left offsets from previous code */
+    padding: 0.75rem 1.5rem; /* optional: makes button bigger */
+    font-size: 1rem;          /* adjust as needed */
+    cursor: pointer;
+}
+
+
+
+
+
+/* === CLEAN Two-column layout for cycles page === */
+.cycles-layout {
+  /* use CSS Grid for predictable columns */
+  display: grid;
+  grid-template-columns: 400px 1fr; /* left column fixed, right column flexible */
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+  max-width: 1100px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Left column (description) - inside normal flow, sticky, full width of column */
+.cycle-description {
+  grid-column: 1 / 2;
+  position: static;     /* stays visible as you scroll down the page */
+  top: 90px;            /* adjust so it sits below your header */
+  align-self: start;
+  width: 100%;          /* fill the grid column */
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #f0f8ff;
+  line-height: 1.45;
+  z-index: 2;           /* above the grid items visually */
+}
+
+/* Right column: the scrollable content that contains your honeycomb grid */
+.cycles-content {
+  grid-column: 2 / 3;
+  width: 100%;
+  box-sizing: border-box;
+  /* no margin-left hacks here — grid handles spacing */
+}
+
+/* make sure the honeycomb grid doesn't add unwanted offsets */
+.cycles-content .honeycomb,
+.cycles-layout .honeycomb {
+  margin: 0;            /* remove default margin if any */
+  padding: 0;
+  justify-self: start;  /* align honeycomb to left of the right column */
+}
+
+/* honeycomb grid itself (example, keep your current settings) */
+.honeycomb {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 60px;
+  gap: 10px;
+  justify-items: center;
+  max-width: 560px; /* keep it narrower so it doesn't overflow the column */
 }
 
 /* Cycle/Week boxes */
@@ -102,90 +174,6 @@ body {
     }
     .cycle-box, .week-box { width: 100px; height: 80px; font-size: 0.8rem; padding: 0.5rem; }
     .cycle-box:nth-child(1), .week-box:nth-child(1) { grid-column: 1 / span 2; }
-}
-
-
-
-
-
-
-
-
-
-
-/* Center all content inside the main container */
-.container {
-    text-align: center;       /* center text and inline elements */
-    margin: 0 auto;           /* keep container centered */
-    padding: 2rem 1rem;       /* optional spacing */
-}
-
-/* Center the button and make it inline-block so margins work */
-#generateBtn {
-    display: inline-block;    /* allow centering and spacing */
-    margin: 1rem auto;        /* space above/below, center horizontally */
-    position: static;         /* remove top/left offsets from previous code */
-    padding: 0.75rem 1.5rem; /* optional: makes button bigger */
-    font-size: 1rem;          /* adjust as needed */
-    cursor: pointer;
-}
-
-
-/* === CLEAN Two-column layout for cycles page === */
-.cycles-layout {
-  /* use CSS Grid for predictable columns */
-  display: grid;
-  grid-template-columns: 300px 1fr; /* left column fixed, right column flexible */
-  gap: 24px;
-  align-items: start;
-  width: 100%;
-  max-width: 1100px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
-/* Left column (description) - inside normal flow, sticky, full width of column */
-.cycle-description {
-  grid-column: 1 / 2;
-  position: static;     /* stays visible as you scroll down the page */
-  top: 90px;            /* adjust so it sits below your header */
-  align-self: start;
-  width: 100%;          /* fill the grid column */
-  box-sizing: border-box;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 12px;
-  padding: 1rem;
-  color: #f0f8ff;
-  line-height: 1.45;
-  z-index: 2;           /* above the grid items visually */
-}
-
-/* Right column: the scrollable content that contains your honeycomb grid */
-.cycles-content {
-  grid-column: 2 / 3;
-  width: 100%;
-  box-sizing: border-box;
-  /* no margin-left hacks here — grid handles spacing */
-}
-
-/* make sure the honeycomb grid doesn't add unwanted offsets */
-.cycles-content .honeycomb,
-.cycles-layout .honeycomb {
-  margin: 0;            /* remove default margin if any */
-  padding: 0;
-  justify-self: start;  /* align honeycomb to left of the right column */
-}
-
-/* honeycomb grid itself (example, keep your current settings) */
-.honeycomb {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 70px;
-  gap: 10px;
-  justify-items: center;
-  max-width: 560px; /* keep it narrower so it doesn't overflow the column */
 }
 
 @media (max-width: 800px) {
@@ -240,10 +228,10 @@ body {
 
 
 
-/* === WEEKS PAGE LAYOUT MATCHING CYCLES PAGE === */
+/* === WEEKS PAGE LAYOUT — MATCHED TO CYCLES PAGE === */
 .weeks-layout {
   display: grid;
-  grid-template-columns: 300px 1fr; /* left column fixed, right column flexible */
+  grid-template-columns: 400px 1fr; /* fixed left, flexible right */
   gap: 24px;
   align-items: start;
   width: 100%;
@@ -253,16 +241,31 @@ body {
   box-sizing: border-box;
 }
 
+/* === GRID FOR WEEKS === */
+.honeycomb, #weeksContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 60px;
+    gap: 10px;
+    justify-items: center;
+    margin: 2rem auto;
+    max-width: 480px;
+    z-index: 1; /* above lines */
+    position: relative;
+    margin-top: 0%;
+}
+
+
 /* Left column (weeks description) */
 .weeks-description {
   grid-column: 1 / 2;
-  position: static;      /* stays in flow */
-  top: 200px;
+  position: static;
+  top: 90px;
   align-self: start;
   width: 100%;
   box-sizing: border-box;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 12px;
   padding: 1rem;
   color: #f0f8ff;
@@ -272,58 +275,57 @@ body {
 
 /* Preserve line breaks in description text */
 #cycleDescription {
-    white-space: pre-line; /* preserves line breaks from JS */
-    line-height: 1.5;      /* optional: adds extra spacing between lines */
+  white-space: pre-line;
+  line-height: 1.5;
 }
 
-
-/* Right column: grid of week boxes */
+/* Right column (weeks content grid) */
 .weeks-content {
   grid-column: 2 / 3;
   width: 100%;
   box-sizing: border-box;
+  padding: 1rem 0; /* adds breathing room under boxes */
 }
 
-/* honeycomb grid inside weeks-content */
+/* Honeycomb grid inside weeks-content */
 .weeks-content .honeycomb,
 .weeks-layout .honeycomb {
   margin: 0;
   padding: 0;
-  justify-self: start;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 70px;
+  grid-auto-rows: 90px;
   gap: 10px;
   justify-items: center;
   max-width: 560px;
 }
 
-/* Week boxes styling */
+/* Week boxes — identical proportions to cycles */
 .week-box {
   width: 120px;
   height: 100px;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 12px;
   text-align: center;
-  padding: 0.6rem;
+  padding: 0rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.60rem;
   color: #f0f8ff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect */
+/* Hover glow effect */
 .week-box:hover {
   box-shadow: 0 0 25px #ffddf7, 0 0 15px #d4f0ff;
   transform: translateY(-4px);
   border-color: #fff;
 }
 
-/* Diamond placement for 7 weeks */
+/* Diamond placement for 7 weeks (same style as cycles) */
 .week-box:nth-child(1) { grid-column: 2; grid-row: 1; }
 .week-box:nth-child(2) { grid-column: 3; grid-row: 2; }
 .week-box:nth-child(3) { grid-column: 1; grid-row: 2; }
@@ -332,16 +334,16 @@ body {
 .week-box:nth-child(6) { grid-column: 1; grid-row: 4; }
 .week-box:nth-child(7) { grid-column: 2; grid-row: 5; }
 
-/* Responsive: stack columns on small screens */
+/* Responsive layout */
 @media (max-width: 800px) {
   .weeks-layout {
-    grid-template-columns: 1fr;  /* stack description and content vertically */
+    grid-template-columns: 1fr;
     gap: 12px;
     padding: 0 0.75rem;
   }
 
   .weeks-description {
-    position: relative;  /* no sticky on mobile */
+    position: relative;
     top: 0;
     width: 100%;
   }
@@ -352,17 +354,16 @@ body {
   }
 
   .weeks-content .honeycomb {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* responsive grid */
-    grid-auto-rows: 100px;  /* maintain box height */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-auto-rows: 100px;
     gap: 10px;
     justify-items: center;
     max-width: 100%;
   }
 
   .week-box {
-    width: 100%;       /* fill the grid cell */
-    min-height: 100px; /* ensure consistent height */
+    width: 100%;
+    min-height: 100px;
   }
 }
 
@@ -555,91 +556,5 @@ body {
 
 
 
-/* footer styling for timeline */
-#timelineContainer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  background: rgba(10, 10, 10, 0.5);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  z-index: 1000;
-}
-
-#timelineScroller {
-  width: 100%;
-  overflow-x: scroll;
-  scroll-behavior: smooth;
-  scrollbar-width: none; /* hide scrollbar in Firefox */
-}
-
-#timelineScroller::-webkit-scrollbar {
-  display: none; /* hide scrollbar in Chrome/Safari */
-}
-
-/* #timelineLine {
-  position: absolute;
-  bottom: 60px;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.2);
-  z-index: 1;
-} */
-
-#timelineBar {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  padding: 30px;
-  width: max-content;
-  position: relative;
-}
-
-.timeline-node {
-  position: relative;
-  z-index: 2;
-  width: 90px;
-  height: 90px;
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 0.9rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.timeline-node.active {
-  background: rgba(255,255,255,0.15);
-  box-shadow: 0 0 20px rgba(255,255,255,0.4);
-  transform: scale(1.1);
-}
-
-#timelineSelector {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 30px;
-  width: 100px;
-  height: 100px;
-  pointer-events: none;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 20px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.15);
-  z-index: 3;
-}
 
 
