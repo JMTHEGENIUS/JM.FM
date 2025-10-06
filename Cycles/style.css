@@ -189,7 +189,7 @@ body {
   .cycles-content .honeycomb {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    grid-auto-rows: 100px;
+    grid-auto-rows: auto;
     gap: 10px;
     justify-items: center;
     max-width: 100%;
@@ -198,7 +198,10 @@ body {
 
   .cycle-box {
     width: 100%;
-    min-height: 100px;
+    min-height: 100px; /* can adjust to 120px if needed */
+    font-size: 0.75rem; /* slightly bigger text for readability */
+    padding: 0.5rem;    /* add breathing room inside box */
+    word-break: break-word; /* force long words to wrap */
   }
 }
 
