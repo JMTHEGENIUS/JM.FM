@@ -198,9 +198,9 @@ body {
 
   .cycle-box {
     width: 100%;
-    min-height: 100px; /* can adjust to 120px if needed */
-    font-size: 0.75rem; /* slightly bigger text for readability */
-    padding: 0.5rem;    /* add breathing room inside box */
+    min-height: 120px; /* can adjust to 120px if needed */
+    font-size: 0.60rem; /* slightly bigger text for readability */
+    padding: 0rem;    /* add breathing room inside box */
     word-break: break-word; /* force long words to wrap */
   }
 }
