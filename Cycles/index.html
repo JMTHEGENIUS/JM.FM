@@ -8,16 +8,6 @@
 </head>
 <body>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Only redirect guests — remove paid check
-  if (localStorage.getItem('userStatus') !== 'loggedIn') {
-    window.location.href = '/join.html';
-  }
-});
-</script>
-
-
     <div class="container">
         <h1>Life Cycles Calendar</h1>
 

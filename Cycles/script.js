@@ -580,23 +580,4 @@ document.addEventListener("DOMContentLoaded", () => {
   highlightNearestNode();
 });
 
-// ======= CYCLES APP ACCESS CONTROL =======
-
-const cyclesBtn = document.getElementById('cycles-btn');
-
-if (cyclesBtn) {
-  cyclesBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const status = getUserStatus();
-    console.log('Cycles click status:', status);
-
-    if (status === 'guest') {
-      // Guests can't access
-      window.location.href = 'join.html';
-    } else {
-      // Paid or loggedIn users can access
-      window.location.href = 'cycles/index.html';
-    }
-  });
-}
 

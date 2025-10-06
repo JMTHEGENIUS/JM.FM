@@ -53,67 +53,7 @@
     <p>© 2025 JM The Genius | Cultivating Conciousness</p>
   </footer>
 
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const navLinks = document.getElementById("nav-links");
-  const hamburger = document.querySelector('.hamburger');
-  const userStatus = localStorage.getItem("userStatus");
-
-  // Redirect guests if needed
-  const protectedPages = ['profile.html', 'music.html', 'merch.html'];
-  const currentPage = window.location.pathname.split('/').pop();
-  if (userStatus !== 'loggedIn' && protectedPages.includes(currentPage)) {
-    window.location.href = 'join.html';
-    return;
-  }
-
-  // Populate nav dynamically
-  if (userStatus === 'loggedIn') {
-    navLinks.innerHTML = `
-      <a href="music.html">Music</a>
-      <a href="merch.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="profile.html">Profile</a>
-      <a href="#" id="logout-btn">Log Out</a>
-    `;
-
-    const logoutBtn = document.getElementById("logout-btn");
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.setItem("userStatus", "guest");
-      window.location.href = "index.html";
-    });
-
-  } else {
-    navLinks.innerHTML = `
-      <a href="index.html">Home</a>
-      <a href="join.html">Music</a>
-      <a href="join.html">Merch</a>
-      <a href="about.html">About</a>
-      <a href="join.html">Join</a>
-      <a href="login.html">Login</a>
-    `;
-  }
-
-  // Hamburger toggle for mobile
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('nav-active');
-      hamburger.classList.toggle('toggle');
-    });
-
-    navLinks.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        navLinks.classList.remove('nav-active');
-        hamburger.classList.remove('toggle');
-      }
-    });
-  }
-});
-</script>
-
 <script src="js/main.js"></script>
-
 
 </body>
 </html>
