@@ -165,16 +165,7 @@ body {
 .cycle-box:nth-child(6), .week-box:nth-child(6) { grid-column: 1; grid-row: 4; }
 .cycle-box:nth-child(7), .week-box:nth-child(7) { grid-column: 2; grid-row: 5; }
 
-/* Responsive adjustments */
-@media (max-width: 500px) {
-    .honeycomb, #weeksContainer {
-        grid-template-columns: 1fr 1fr;
-        grid-auto-rows: 90px;
-        max-width: 300px;
-    }
-    .cycle-box, .week-box { width: 100px; height: 80px; font-size: 0.8rem; padding: 0.5rem; }
-    .cycle-box:nth-child(1), .week-box:nth-child(1) { grid-column: 1 / span 2; }
-}
+
 
 @media (max-width: 800px) {
   .cycles-layout {
@@ -191,21 +182,22 @@ body {
 
   .cycles-content {
     grid-column: 1;
+    width: 100%;
   }
 
   /* Make honeycomb grid flexible on mobile */
-  .honeycomb {
+  .cycles-content .honeycomb {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     grid-auto-rows: 100px;
     gap: 10px;
     justify-items: center;
     max-width: 100%;
+    margin: 0 auto;
   }
 
   .cycle-box {
     width: 100%;
-    height: auto;
     min-height: 100px;
   }
 }
