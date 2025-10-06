@@ -56,17 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const tarot = ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Hierophant", "The Lovers"];
         const diamondOrder = [0, 2, 1, 3, 5, 4, 6]; // diamond layout
 
-        // Birthday highlight
-        const birthdayHighlight = document.createElement('div');
-        birthdayHighlight.classList.add('cycle-box', 'birthday-box');
-        birthdayHighlight.innerHTML = `
-         <h2>🎂 Birthday</h2>
-         <p>${recentBirthday.toLocaleDateString()}</p>
-         <p>This is your solar reset — the 365th day, completing your cycle year.</p>
-         `;
-        cyclesContainer.appendChild(birthdayHighlight);
-
-
         diamondOrder.forEach(i => {
             const startDayNum = i * 52 + 1;
             const endDayNum = (i + 1) * 52;
@@ -579,5 +568,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   highlightNearestNode();
 });
+
+
+// === Update birthday box in left column with next upcoming birthday + countdown ===
+const userBirthdayEl = document.getElementById('userBirthday');
+if (userBirthdayEl) {
+    const birthdayStr = localStorage.getItem('recentBirthday');
+    if (birthdayStr) {
+        const birthDate = new Date(birthdayStr);
+        const today = new Date();
+
+        // Set next birthday to this year initially
+        let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+        // If this year's birthday already passed, use next year
+        if (nextBirthday < today) {
+            nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+        }
+
+        // Update birthday display
+        userBirthdayEl.textContent = nextBirthday.toLocaleDateString();
+
+        // Calculate days until next birthday
+        const oneDay = 1000 * 60 * 60 * 24; // ms in a day
+        const diffDays = Math.ceil((nextBirthday - today) / oneDay);
+
+        // Add countdown below the date
+        let countdownEl = document.getElementById('birthdayCountdown');
+        if (!countdownEl) {
+            countdownEl = document.createElement('p');
+            countdownEl.id = 'birthdayCountdown';
+            userBirthdayEl.parentNode.appendChild(countdownEl);
+        }
+        countdownEl.textContent = `${diffDays} day${diffDays !== 1 ? 's' : ''} until your next birthday 🎉`;
+
+    } else {
+        userBirthdayEl.textContent = "Not set yet";
+    }
+}
+
 
 

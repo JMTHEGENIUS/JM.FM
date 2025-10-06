@@ -12,7 +12,7 @@ body {
     overflow-x: hidden;
 
     /* Cosmic background image (replace with your JPG) */
-    background: url('Cycles/photos/multiverse earth.jpg') no-repeat center top;
+    background: url('photos/multiverse earth.jpg') no-repeat center top;
     background-size: cover;
 }
 
@@ -481,11 +481,27 @@ body {
 
 /* Birthday box styling */
 .birthday-box {
-  background: linear-gradient(135deg, gold, orange);
-  color: white;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #0e4c78, #ffcc3378);
+  color: #fffbea;
   font-weight: bold;
-  box-shadow: 0 0 12px gold;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(162, 186, 42, 0.862);
+  text-align: center;
 }
+
+.birthday-box h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.birthday-box p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
 
 
 /* footer styling for timeline */
@@ -575,8 +591,4 @@ body {
   z-index: 3;
 }
 
-#cycles-btn.locked {
-  opacity: 0.5;
-  pointer-events: none;
-  cursor: not-allowed;
-}
+
