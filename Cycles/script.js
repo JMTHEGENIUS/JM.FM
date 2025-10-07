@@ -1,16 +1,21 @@
 // === INDEX PAGE ===
 const generateBtn = document.getElementById('generateBtn');
+
 if (generateBtn) {
     generateBtn.addEventListener('click', () => {
-        const birthdayStr = document.getElementById('birthday').value;
-        if (!birthdayStr) {
+        const birthdayInput = document.getElementById('birthday').value;
+        if (!birthdayInput) {
             alert("Please enter a birthday.");
             return;
         }
 
         // Parse birthday as local date (explicit noon avoids timezone shift)
-        const birthDate = new Date(birthdayStr + "T12:00:00");
+        const birthDate = new Date(birthdayInput + "T12:00:00");
         const today = new Date();
+
+        // Store birthday in ISO format (YYYY-MM-DD) to ensure reliable parsing later
+        const isoBirthday = birthDate.toISOString().split("T")[0];
+        localStorage.setItem('birthday', isoBirthday);
 
         // --- Find most recent birthday ---
         let recentBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate(), 12, 0, 0);
@@ -18,16 +23,15 @@ if (generateBtn) {
             recentBirthday.setFullYear(today.getFullYear() - 1);
         }
 
-        // 🌞 NEW: The cycles begin the day AFTER the birthday
+        // 🌞 Cycles begin the day AFTER the birthday
         const cycleStart = new Date(recentBirthday);
-        cycleStart.setDate(cycleStart.getDate() + 1); // Dec 1 if birthday = Nov 30
+        cycleStart.setDate(cycleStart.getDate() + 1); // e.g., Dec 1 if birthday = Nov 30
 
-        // 🌝 NEW: The cycles end 364 days later (the day before next birthday)
+        // 🌝 Cycles end 364 days later (the day before next birthday)
         const cycleEnd = new Date(cycleStart);
         cycleEnd.setDate(cycleEnd.getDate() + 363); // inclusive 364-day span
 
-        // Save all relevant data
-        localStorage.setItem('birthday', birthdayStr);
+        // Save all relevant cycle data
         localStorage.setItem('recentBirthday', recentBirthday.toISOString());
         localStorage.setItem('cycleStart', cycleStart.toISOString());
         localStorage.setItem('cycleEnd', cycleEnd.toISOString());
@@ -542,22 +546,45 @@ if (userBirthdayEl) {
 
 
 
-// === ZODIAC & NUMEROLOGY SECTION ===
-const zodiacSignEl = document.getElementById("zodiacSign");
-const zodiacMeaningEl = document.getElementById("zodiacMeaning");
-const lifePathNumEl = document.getElementById("lifePathNum");
-const lifePathMeaningEl = document.getElementById("lifePathMeaning");
-const dayNumEl = document.getElementById("dayNum");
-const dayNumMeaningEl = document.getElementById("dayNumMeaning");
+// === ZODIAC & NUMEROLOGY SECTION (replace the old block with this) ===
+(function() {
+  const zodiacSignEl = document.getElementById("zodiacSign");
+  const zodiacMeaningEl = document.getElementById("zodiacMeaning");
+  const lifePathNumEl = document.getElementById("lifePathNum");
+  const lifePathMeaningEl = document.getElementById("lifePathMeaning");
+  const dayNumEl = document.getElementById("dayNum");
+  const dayNumMeaningEl = document.getElementById("dayNumMeaning");
 
-const userBirthday = localStorage.getItem("birthday");
-if (userBirthday) {
-  const birthDate = new Date(userBirthday);
-  const day = birthDate.getDate();
-  const month = birthDate.getMonth() + 1;
-  const year = birthDate.getFullYear();
+  const storedBirthday = localStorage.getItem("birthday");
+  if (!storedBirthday) return; // nothing to do
 
-  // --- Zodiac Sign (works as before) ---
+  // Robust birthday parser: supports YYYY-MM-DD, MM-DD-YYYY, MM/DD/YYYY, "11-30-1997", etc.
+  function parseBirthday(str) {
+    const parts = str.split(/[^0-9]+/).filter(Boolean);
+    if (parts.length === 3) {
+      // If first part is 4 digits assume ISO-style (YYYY-MM-DD)
+      if (parts[0].length === 4) {
+        return { year: parseInt(parts[0], 10), month: parseInt(parts[1], 10), day: parseInt(parts[2], 10) };
+      } else {
+        // otherwise assume MM-DD-YYYY or MM/DD/YYYY
+        return { month: parseInt(parts[0], 10), day: parseInt(parts[1], 10), year: parseInt(parts[2], 10) };
+      }
+    }
+    // fallback: try Date parsing
+    const d = new Date(str);
+    if (!isNaN(d)) return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
+    return null;
+  }
+
+  const parsed = parseBirthday(storedBirthday);
+  if (!parsed) {
+    console.warn("Could not parse birthday:", storedBirthday);
+    return;
+  }
+
+  const { day, month, year } = parsed;
+
+  // --- Zodiac (kept same as what you've been using) ---
   const zodiacData = [
     { sign: "Capricorn", start: [12, 22], end: [1, 19], meaning: "Practical, grounded, and ambitious. You climb steadily toward your purpose." },
     { sign: "Aquarius", start: [1, 20], end: [2, 18], meaning: "Visionary, independent, and humanitarian. You walk to your own rhythm." },
@@ -578,68 +605,89 @@ if (userBirthday) {
     (month === z.end[0] && day <= z.end[1])
   ));
 
-  zodiacSignEl.textContent = zodiac ? zodiac.sign : "Unknown";
-  zodiacMeaningEl.textContent = zodiac ? zodiac.meaning : "";
+  if (zodiacSignEl) zodiacSignEl.textContent = zodiac ? zodiac.sign : "Unknown";
+  if (zodiacMeaningEl) zodiacMeaningEl.textContent = zodiac ? zodiac.meaning : "";
 
-  // --- Numerology Helpers ---
-  function sumDigits(num) {
-    return num.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+  // --- Numerology helpers ---
+  function sumDigits(n) {
+    return String(n).split("").map(Number).reduce((a, b) => a + b, 0);
   }
 
-  // --- Life Path Number (master number safe) ---
-  function calcLifePath(y, m, d) {
-    // Step 1: concatenate month, day, year as string
-    let digits = `${m}${d}${y}`; // e.g., "11301997"
-
-    // Step 2: sum all digits
-    let total = digits.split('').map(Number).reduce((a, b) => a + b, 0); // 1+1+3+0+1+9+9+7 = 22
-
-    // Step 3: reduce until single digit or master number
-    while (total > 9 && ![11, 22, 33].includes(total)) {
-      total = sumDigits(total);
+  // Reduce preserving master numbers 11,22,33.
+  function reduceMasterSafe(n) {
+    n = Number(n);
+    // If it's already a master number, keep it
+    if ([11, 22, 33].includes(n)) return n;
+    // Reduce until single digit or a master number appears
+    while (n > 9 && ![11, 22, 33].includes(n)) {
+      n = sumDigits(n);
+      if ([11,22,33].includes(n)) return n;
     }
-
-    return total;
+    return n;
   }
 
-  // --- Day Number ---
-  function calcDayNum(d) {
-    // Day number is reduced to single digit
-    let total = d;
-    while (total > 9) {
-      total = sumDigits(total);
-    }
-    return total;
+  // ---- Life Path calculation (correct method for preserving masters) ----
+  // Reduce month/day/year individually (preserving masters) then sum and reduce (preserving masters)
+  function calcLifePath(yearVal, monthVal, dayVal) {
+    const mReduced = reduceMasterSafe(monthVal);         // keeps 11 if month is 11
+    const dReduced = reduceMasterSafe(dayVal);           // e.g., 30 -> 3
+    const yearDigitSum = sumDigits(yearVal);             // e.g., 1997 -> 26
+    const yReduced = reduceMasterSafe(yearDigitSum);     // 26 -> 8
+
+    const total = mReduced + dReduced + yReduced;       // e.g., 11 + 3 + 8 = 22
+    const lifePath = reduceMasterSafe(total);            // preserve master 22
+
+    // return breakdown too so you can inspect results in the console
+    return { lifePath, breakdown: { month: mReduced, day: dReduced, year: yReduced, total } };
   }
 
-  // --- Compute Life Path and Day Number ---
-  const lifePath = calcLifePath(year, month, day);
-  const dayNum = calcDayNum(day);
+  // Day number: reduce day-of-month (30 -> 3). If someone is born on 11 we keep 11 as master day.
+  function calcDayNum(dayVal) {
+    return reduceMasterSafe(dayVal);
+  }
 
-  lifePathNumEl.textContent = lifePath;
-  dayNumEl.textContent = dayNum;
+  // --- Compute and display ---
+  const { lifePath, breakdown } = calcLifePath(year, month, day);
+  const dayNumber = calcDayNum(day);
 
-  // --- Meanings ---
+  if (lifePathNumEl) lifePathNumEl.textContent = lifePath;
+  if (dayNumEl) dayNumEl.textContent = dayNumber;
+
   const lifePathMeanings = {
-    1: "Leader and pioneer — your life path is to stand independently and express your individuality.",
-    2: "Diplomat and peacemaker — harmony and cooperation are your gifts.",
-    3: "Creative communicator — joy, expression, and art are your purpose.",
-    4: "Builder and stabilizer — structure, service, and order guide your growth.",
-    5: "Adventurer — freedom and experience expand your consciousness.",
-    6: "Nurturer — love, family, and balance define your destiny.",
-    7: "Seeker of truth — your path is spiritual study and introspection.",
-    8: "Master of manifestation — material success teaches responsibility.",
-    9: "Humanitarian — compassion and wisdom flow through you.",
-    11: "Illuminator — inspired vision and spiritual teaching guide others.",
-    22: "Master builder — you manifest divine ideals into tangible reality.",
-    33: "Master teacher — unconditional love and service to humanity are your path."
+    1: "Leader and pioneer — independence, originality, and courage.",
+    2: "Diplomat and peacemaker — harmony and cooperation.",
+    3: "Creative communicator — joy, artistry, and expression.",
+    4: "Builder and stabilizer — structure, service, and discipline.",
+    5: "Adventurer — freedom, exploration, and adaptability.",
+    6: "Nurturer — love, responsibility, and beauty.",
+    7: "Seeker of truth — introspection and spiritual study.",
+    8: "Manifestor — material success and responsibility.",
+    9: "Humanitarian — compassion and completion.",
+    11: "Master Illuminator — intuition, inspiration, spiritual teaching.",
+    22: "Master Builder — turning vision into practical reality.",
+    33: "Master Teacher — unconditional love and service."
   };
 
-  lifePathMeaningEl.textContent = lifePathMeanings[lifePath] || "";
-  dayNumMeaningEl.textContent = `Day ${dayNum} reflects your daily essence — ${lifePathMeanings[dayNum] || "expressed through intuition and instinct."}`;
-}
+  if (lifePathMeaningEl) lifePathMeaningEl.textContent = lifePathMeanings[lifePath] || "";
+  if (dayNumMeaningEl) dayNumMeaningEl.textContent =
+    `Day ${dayNumber} reflects your daily essence — ${lifePathMeanings[dayNumber] || "expressed through instinct and daily rhythm."}`;
 
-// === Cosmic Toggle (kept as is) ===
+  // Helpful console trace for debugging / learning:
+  console.group("Numerology trace");
+  console.log("Stored birthday:", storedBirthday);
+  console.log("Parsed (YYYY-MM-DD):", `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`);
+  console.log("Breakdown -> month reduced:", breakdown.month, ", day reduced:", breakdown.day, ", year reduced:", breakdown.year);
+  console.log("Sum:", breakdown.total, "→ lifePath:", lifePath);
+  console.log("dayNumber:", dayNumber);
+  console.groupEnd();
+
+  // Optionally store values for other pages (keeps your existing flow)
+  localStorage.setItem("lifePathNum", String(lifePath));
+  localStorage.setItem("dayNum", String(dayNumber));
+})();
+
+
+// === Cosmic Toggle (unchanged) ===
 document.addEventListener("DOMContentLoaded", () => {
   const toggleCosmicBtn = document.getElementById("toggleCosmicBtn");
   const cosmicContent = document.getElementById("cosmicContent");
