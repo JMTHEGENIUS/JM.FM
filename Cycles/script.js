@@ -218,6 +218,74 @@ document.addEventListener("DOMContentLoaded", () => {
  cycleDescription.innerText = cycleDescriptions[cycleNumber] || "No description available.";
 
 
+ // Weekly lessons for each cycle (Circle 7 themes)
+const weeklyLessons = {
+  1: [
+    "Week 1 – Awakening the Divine Mind: Recognize the power of thought and begin directing it consciously.",
+    "Week 2 – Manifestation through Will: Apply your personal power toward righteous purpose.",
+    "Week 3 – Building Foundations: Structure your goals with order and clarity.",
+    "Week 4 – The Fire of Action: Move courageously with faith and vision.",
+    "Week 5 – Balance of Power: Practice humility while standing in strength.",
+    "Week 6 – Illumination of Self: Let your inner light reveal new pathways.",
+    "Week 7 – Reflection and Renewal: Integrate what has been learned before moving forward."
+  ],
+  2: [
+    "Week 1 – Harmony with Nature: Move gently, attuned to natural rhythms.",
+    "Week 2 – The Art of Listening: Receive wisdom through stillness and intuition.",
+    "Week 3 – Service and Cooperation: Build peace through mutual respect.",
+    "Week 4 – Healing Waters: Purify thoughts, words, and emotions.",
+    "Week 5 – The Path of Patience: Let divine timing unfold without haste.",
+    "Week 6 – Inner Balance: Align feeling and reason into harmony.",
+    "Week 7 – Reflection in Stillness: Observe how peace transforms understanding."
+  ],
+  3: [
+    "Week 1 – Strength and Endurance: Direct your energy toward perseverance.",
+    "Week 2 – Purification through Work: Discipline the mind and body in purpose.",
+    "Week 3 – Courage and Determination: Face inner resistance with love and will.",
+    "Week 4 – Mastery through Challenge: Convert struggle into strength.",
+    "Week 5 – Refinement of Character: Let restraint reveal wisdom.",
+    "Week 6 – Purity of Action: Act with conscious intent and divine justice.",
+    "Week 7 – Rest in Achievement: Review effort and prepare for renewal."
+  ],
+  4: [
+    "Week 1 – Awakening of Insight: Observe divine law in all experience.",
+    "Week 2 – The Power of Truth: Let honesty guide thought and deed.",
+    "Week 3 – Spiritual Study: Deepen understanding through sacred learning.",
+    "Week 4 – Wisdom in Silence: Listen to the higher voice within.",
+    "Week 5 – Expression of Genius: Share your unique vibration with the world.",
+    "Week 6 – Reformation: Release the old; accept divine inspiration.",
+    "Week 7 – Union of Mind and Spirit: Align intellect with divine will."
+  ],
+  5: [
+    "Week 1 – Expansion through Knowledge: Open the mind to universal law.",
+    "Week 2 – Abundance in Gratitude: Recognize prosperity as a state of mind.",
+    "Week 3 – Sharing Wisdom: Spread truth with joy and understanding.",
+    "Week 4 – Higher Study: Seek wisdom beyond form and tradition.",
+    "Week 5 – Spiritual Journey: Reflect on the path of unfoldment.",
+    "Week 6 – Prosperity through Purpose: Let service increase abundance.",
+    "Week 7 – Illumined Awareness: Perceive unity in all experiences."
+  ],
+  6: [
+    "Week 1 – Beauty in Simplicity: Appreciate divine harmony in all creation.",
+    "Week 2 – Heart-Centered Living: Lead with love and compassion.",
+    "Week 3 – Union and Cooperation: Strengthen bonds with righteous companions.",
+    "Week 4 – Creative Expression: Let art and beauty uplift the soul.",
+    "Week 5 – Rest and Pleasure: Restore vitality through joy.",
+    "Week 6 – Peaceful Prosperity: Enjoy the fruits of balance and care.",
+    "Week 7 – Reflection on Love: Honor all relationships as divine mirrors."
+  ],
+  7: [
+    "Week 1 – Completion and Review: Reflect upon the year’s progress.",
+    "Week 2 – Letting Go: Release attachments to prepare for renewal.",
+    "Week 3 – Inner Cleansing: Purify the heart through contemplation.",
+    "Week 4 – Solitude and Prayer: Seek guidance in stillness.",
+    "Week 5 – Closure of the Old: Accept the end of cycles with peace.",
+    "Week 6 – Seeds of Renewal: Prepare mentally for new beginnings.",
+    "Week 7 – Rest in the Infinite: Reconnect with divine source and readiness."
+  ]
+};
+
+
         const weekOrder = [0, 2, 1, 3, 5, 4, 6]; // diamond layout
 
         weekOrder.forEach(i => {
@@ -236,7 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h2>Week ${i + 1}</h2>
                 <p>Days ${weekStartDay}–${weekEndDay}</p>
                 <p>${weekStartDate.toLocaleDateString()} → ${weekEndDate.toLocaleDateString()}</p>
-                <p>Weekly lesson placeholder</p>
+                <p>${weeklyLessons[cycleNumber]?.[i] || "Weekly lesson placeholder"}</p>
+
             `;
 
             div.addEventListener('click', () => {
@@ -470,5 +539,121 @@ if (userBirthdayEl) {
     }
 }
 
+
+
+
+// === ZODIAC & NUMEROLOGY SECTION ===
+const zodiacSignEl = document.getElementById("zodiacSign");
+const zodiacMeaningEl = document.getElementById("zodiacMeaning");
+const lifePathNumEl = document.getElementById("lifePathNum");
+const lifePathMeaningEl = document.getElementById("lifePathMeaning");
+const dayNumEl = document.getElementById("dayNum");
+const dayNumMeaningEl = document.getElementById("dayNumMeaning");
+
+const userBirthday = localStorage.getItem("birthday");
+if (userBirthday) {
+  const birthDate = new Date(userBirthday);
+  const day = birthDate.getDate();
+  const month = birthDate.getMonth() + 1;
+  const year = birthDate.getFullYear();
+
+  // --- Zodiac Sign (works as before) ---
+  const zodiacData = [
+    { sign: "Capricorn", start: [12, 22], end: [1, 19], meaning: "Practical, grounded, and ambitious. You climb steadily toward your purpose." },
+    { sign: "Aquarius", start: [1, 20], end: [2, 18], meaning: "Visionary, independent, and humanitarian. You walk to your own rhythm." },
+    { sign: "Pisces", start: [2, 19], end: [3, 20], meaning: "Empathic, imaginative, and spiritual. You feel deeply and see beyond form." },
+    { sign: "Aries", start: [3, 21], end: [4, 19], meaning: "Bold, fiery, and pioneering. You initiate new cycles with courage." },
+    { sign: "Taurus", start: [4, 20], end: [5, 20], meaning: "Stable, artistic, and sensual. You manifest beauty through consistency." },
+    { sign: "Gemini", start: [5, 21], end: [6, 20], meaning: "Curious, communicative, and quick-minded. You thrive through connection and learning." },
+    { sign: "Cancer", start: [6, 21], end: [7, 22], meaning: "Nurturing, protective, and intuitive. You embody the heart of home and care." },
+    { sign: "Leo", start: [7, 23], end: [8, 22], meaning: "Radiant, generous, and strong. You express divine light through creativity." },
+    { sign: "Virgo", start: [8, 23], end: [9, 22], meaning: "Analytical, healing, and devoted. You refine the world through service." },
+    { sign: "Libra", start: [9, 23], end: [10, 22], meaning: "Balanced, graceful, and diplomatic. You bring harmony and beauty wherever you go." },
+    { sign: "Scorpio", start: [10, 23], end: [11, 21], meaning: "Transformative, passionate, and intense. You are rebirth embodied." },
+    { sign: "Sagittarius", start: [11, 22], end: [12, 21], meaning: "Adventurous, wise, and freedom-loving. You seek truth through exploration." }
+  ];
+
+  const zodiac = zodiacData.find(z => (
+    (month === z.start[0] && day >= z.start[1]) ||
+    (month === z.end[0] && day <= z.end[1])
+  ));
+
+  zodiacSignEl.textContent = zodiac ? zodiac.sign : "Unknown";
+  zodiacMeaningEl.textContent = zodiac ? zodiac.meaning : "";
+
+  // --- Numerology Helpers ---
+  function sumDigits(num) {
+    return num.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+  }
+
+  // --- Life Path Number (master number safe) ---
+  function calcLifePath(y, m, d) {
+    // Step 1: concatenate month, day, year as string
+    let digits = `${m}${d}${y}`; // e.g., "11301997"
+
+    // Step 2: sum all digits
+    let total = digits.split('').map(Number).reduce((a, b) => a + b, 0); // 1+1+3+0+1+9+9+7 = 22
+
+    // Step 3: reduce until single digit or master number
+    while (total > 9 && ![11, 22, 33].includes(total)) {
+      total = sumDigits(total);
+    }
+
+    return total;
+  }
+
+  // --- Day Number ---
+  function calcDayNum(d) {
+    // Day number is reduced to single digit
+    let total = d;
+    while (total > 9) {
+      total = sumDigits(total);
+    }
+    return total;
+  }
+
+  // --- Compute Life Path and Day Number ---
+  const lifePath = calcLifePath(year, month, day);
+  const dayNum = calcDayNum(day);
+
+  lifePathNumEl.textContent = lifePath;
+  dayNumEl.textContent = dayNum;
+
+  // --- Meanings ---
+  const lifePathMeanings = {
+    1: "Leader and pioneer — your life path is to stand independently and express your individuality.",
+    2: "Diplomat and peacemaker — harmony and cooperation are your gifts.",
+    3: "Creative communicator — joy, expression, and art are your purpose.",
+    4: "Builder and stabilizer — structure, service, and order guide your growth.",
+    5: "Adventurer — freedom and experience expand your consciousness.",
+    6: "Nurturer — love, family, and balance define your destiny.",
+    7: "Seeker of truth — your path is spiritual study and introspection.",
+    8: "Master of manifestation — material success teaches responsibility.",
+    9: "Humanitarian — compassion and wisdom flow through you.",
+    11: "Illuminator — inspired vision and spiritual teaching guide others.",
+    22: "Master builder — you manifest divine ideals into tangible reality.",
+    33: "Master teacher — unconditional love and service to humanity are your path."
+  };
+
+  lifePathMeaningEl.textContent = lifePathMeanings[lifePath] || "";
+  dayNumMeaningEl.textContent = `Day ${dayNum} reflects your daily essence — ${lifePathMeanings[dayNum] || "expressed through intuition and instinct."}`;
+}
+
+// === Cosmic Toggle (kept as is) ===
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleCosmicBtn = document.getElementById("toggleCosmicBtn");
+  const cosmicContent = document.getElementById("cosmicContent");
+
+  if (toggleCosmicBtn && cosmicContent) {
+    toggleCosmicBtn.addEventListener("click", () => {
+      cosmicContent.classList.toggle("visible");
+      cosmicContent.classList.toggle("hidden");
+
+      toggleCosmicBtn.innerHTML = cosmicContent.classList.contains("visible")
+        ? "<span>🌙 Hide Your Cosmic Blueprint 🌙</span>"
+        : "<span>✨ Reveal Your Cosmic Blueprint ✨</span>";
+    });
+  }
+});
 
 
