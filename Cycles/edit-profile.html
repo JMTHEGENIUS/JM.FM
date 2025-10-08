@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile – Cosmic Cycle Calendar</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/edit-profile.js"></script>
+</head>
+<body>
+
+  <div class="profile-box">
+    <h1>Cosmic Cycle Calendar</h1>
+    <h2>Edit Profile</h2>
+
+    <!-- Profile Picture Section -->
+<div class="profile-picture-section">
+  <img id="profilePicPreview" src="images/default-avatar.png" alt="Profile Picture" class="profile-pic">
+  <input type="file" id="profilePicInput" accept="image/*">
+  <button id="uploadPicBtn">Upload New Photo</button>
+</div>
+
+
+    <form id="editProfileForm">
+
+      <input type="text" id="username" placeholder="Username">
+      <input type="text" id="fullName" placeholder="Full Name">
+      <input type="date" id="birthday" placeholder="Birthday">
+      <input type="time" id="birthTime" placeholder="Birth Time">
+      <input type="text" id="birthLocation" placeholder="Birth Location">
+      <input type="text" id="gender" placeholder="Gender">
+      <input type="text" id="pronouns" placeholder="Pronouns">
+
+      <button type="submit" id="saveProfileBtn">Save Changes</button>
+      <button type="button" id="cancelBtn">Cancel</button>
+
+      <div id="editProfileMessage" class="auth-message"></div>
+    </form>
+
+  </div>
+
+</body>
+</html>

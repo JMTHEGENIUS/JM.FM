@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile – Cosmic Cycle Calendar</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/script.js"></script> <!-- replaced profile.js with your main -->
+</head>
+<body>
+
+  <div class="profile-box wide">
+    <!-- Centered Title -->
+    <h1 class="main-title">Cosmic Cycle Calendar</h1>
+
+    <!-- Profile Picture -->
+    <div class="profile-picture-container">
+      <img id="profilePic" src="images/default-avatar.png" alt="Profile Picture" class="profile-pic">
+    </div>
+
+    <!-- Subheading -->
+    <h2>Cosmic Calibration</h2>
+
+    <!-- User Info Section -->
+    <div class="profile-section">
+      <p><strong>Username:</strong> <span id="displayUsername">Loading...</span></p>
+      <p><strong>Email:</strong> <span id="displayEmail">Loading...</span></p>
+      <p><strong>Gender:</strong> <span id="displayGender">Loading...</span></p>
+      <p><strong>Pronouns:</strong> <span id="displayPronouns">Loading...</span></p>
+      <p><strong>Birthday:</strong> <span id="displayBirthday">Loading...</span></p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Buttons -->
+    <div class="profile-actions">
+      <button id="editProfileBtn">Edit Profile</button>
+      <button id="myCosmicCycleBtn">My Cosmic Cycle</button>
+      <button id="logoutBtn">Log Out</button>
+    </div>
+
+    <div id="profileMessage" class="auth-message"></div>
+  </div>
+
+</body>
+</html>
+
+

@@ -629,3 +629,185 @@ body {
   }
 }
 
+/* === GLASSY AUTH & PROFILE BOX === */
+.auth-box, .profile-box {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(255, 221, 247, 0.3);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 3rem auto;
+  text-align: center;
+  color: #f0f8ff;
+}
+
+/* Centered Title for App or Profile */
+.auth-box h2, .profile-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffd580;
+  font-weight: bold;
+}
+
+/* Input fields inside glassy container */
+.auth-box input, .profile-box input {
+  width: 90%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: #f0f8ff;
+  font-size: 1rem;
+}
+
+/* Buttons inside glassy container */
+.auth-box button, .profile-box button {
+  width: 95%;
+  margin-top: 1rem;
+  padding: 0.75rem 0;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 221, 247, 0.2);
+  color: #fffbea;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-box button:hover, .profile-box button:hover {
+  background: rgba(255, 221, 247, 0.35);
+  box-shadow: 0 0 12px #ffddf7;
+}
+
+
+
+/* === PROFILE PAGE === */
+.profile-box {
+ width: 95%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.profile-section {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.profile-section strong {
+  color: #ffd580;
+}
+
+.divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 1.5rem 0;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.profile-actions button {
+  flex: 1;
+}
+
+/* Profile picture section */
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-picture-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 15px rgba(255, 213, 128, 0.4);
+}
+
+#profilePicInput {
+  cursor: pointer;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd580;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Cosmic Cycle button */
+#myCosmicCycleBtn {
+  /* margin-top: 1.5rem; */
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ffd580;
+  font-size: 1rem;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  width: 90%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#myCosmicCycleBtn:hover {
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 0 12px #ffd580;
+}
+
+.profile-picture-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+#profilePicInput {
+  color: #ffd580;
+  margin-bottom: 0.5rem;
+}
+
+#uploadPicBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffd580;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#uploadPicBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px #ffd580;
+}

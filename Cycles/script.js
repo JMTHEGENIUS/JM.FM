@@ -704,4 +704,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// === DISPLAY PROFILE INFO ===
+document.addEventListener('DOMContentLoaded', async () => {
+  const usernameSpan = document.getElementById('displayUsername');
+  const emailSpan = document.getElementById('displayEmail');
+  const genderSpan = document.getElementById('displayGender');
+  const pronounsSpan = document.getElementById('displayPronouns');
+  const birthdaySpan = document.getElementById('displayBirthday');
+  const myCosmicCycleBtn = document.getElementById('myCosmicCycleBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const editProfileBtn = document.getElementById('editProfileBtn');
 
+  if (firebaseAuth) {
+    firebaseAuth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      emailSpan.textContent = user.email;
+
+      const userRef = doc(firebaseDB, 'users', user.uid);
+      const snap = await getDoc(userRef);
+
+      if (snap.exists()) {
+        const data = snap.data();
+        usernameSpan.textContent = data.username || 'Not set';
+        genderSpan.textContent = data.gender || 'Not set';
+        pronounsSpan.textContent = data.pronouns || 'Not set';
+        birthdaySpan.textContent = data.birthday || 'Not set';
+      } else {
+        usernameSpan.textContent = 'Not set';
+      }
+    });
+  }
+
+  myCosmicCycleBtn.addEventListener('click', () => {
+    window.location.href = 'cycles.html';
+  });
+
+  logoutBtn.addEventListener('click', async () => {
+    await firebaseAuth.signOut();
+    window.location.href = 'login.html';
+  });
+
+  editProfileBtn.addEventListener('click', () => {
+    window.location.href = 'edit-profile.html';
+  });
+});
+
+
+if (snap.exists() && snap.data().photoURL) {
+  document.getElementById('profilePic').src = snap.data().photoURL;
+}
