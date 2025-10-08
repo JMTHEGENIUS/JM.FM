@@ -53,6 +53,33 @@ editProfileForm.addEventListener('submit', async (e) => {
   }
 });
 
+
+
+saveBtn.addEventListener("click", async () => {
+  const username = document.getElementById("username").value.trim();
+  const gender = document.getElementById("gender").value.trim();
+  const pronouns = document.getElementById("pronouns").value.trim();
+  const birthday = document.getElementById("birthday").value;
+
+  try {
+    await updateDoc(userRef, {
+      username,
+      gender,
+      pronouns,
+      birthday,
+    });
+
+    alert("Profile updated successfully!");
+    window.location.href = "profile.html"; // 👈 Redirect to profile page
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Failed to update profile. Please try again.");
+  }
+});
+
+
+
+
 // Cancel button
 cancelBtn.addEventListener('click', () => {
   window.location.href = 'profile.html';

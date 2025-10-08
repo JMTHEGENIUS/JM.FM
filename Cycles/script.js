@@ -754,6 +754,48 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-if (snap.exists() && snap.data().photoURL) {
-  document.getElementById('profilePic').src = snap.data().photoURL;
+import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+const auth = window.firebaseAuth;
+const db = window.firebaseDB;
+
+const signupForm = document.getElementById("signupForm");
+if (signupForm) {
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const gender = document.getElementById("gender").value;
+    const pronouns = document.getElementById("pronouns").value;
+    const birthday = document.getElementById("birthday").value;
+
+    try {
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Update display name
+      await updateProfile(user, { displayName: username });
+
+      // Save to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username,
+        email,
+        gender,
+        pronouns,
+        birthday,
+        createdAt: new Date().toISOString()
+      });
+
+      // Redirect
+      window.location.href = "profile.html";
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert(error.message);
+    }
+  });
 }
+

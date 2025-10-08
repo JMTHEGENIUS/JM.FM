@@ -14,18 +14,86 @@
     <h1>Cosmic Cycle Calendar</h1>
     <h2>Sign Up</h2>
 
-    <input type="text" id="username" placeholder="Username">
-    <input type="text" id="fullName" placeholder="Full Name">
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <input type="text" id="gender" placeholder="Gender">
-    <input type="text" id="pronouns" placeholder="Pronouns">
+    <form id="signupForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="text" id="gender" placeholder="Gender (optional)">
+      <input type="text" id="pronouns" placeholder="Pronouns (optional)">
+      <input type="date" id="birthday" required>
+      <button type="submit" id="signupBtn">Sign Up</button>
+      <p id="signupMessage"></p>
+    </form>
 
-    <button id="signupBtn">Sign Up</button>
-    <p>Already have an account? <a href="login.html">Log In</a></p>
-
-    <div id="signupMessage" class="auth-message"></div>
   </div>
+
+  <!-- js/signup.js -->
+  <script type="module">
+      import { firebaseAuth, firebaseDB } from './firebase.js'; // ensure firebase.js exports these
+      import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+      import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+      const signupForm = document.getElementById("signupForm");
+      if (signupForm) {
+        signupForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const gender = document.getElementById("gender").value.trim();
+          const pronouns = document.getElementById("pronouns").value.trim();
+          const birthday = document.getElementById("birthday").value;
+
+          if (!username || !email || !password || !birthday) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          try {
+            // Create user with Firebase Auth
+            const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+            const user = userCredential.user;
+
+            // Update display name
+            await updateProfile(user, { displayName: username });
+
+            // Save user info to Firestore
+            await setDoc(doc(firebaseDB, "users", user.uid), {
+              username,
+              email,
+              gender,
+              pronouns,
+              birthday,
+              photoURL: "", // optional default, can be updated later
+              createdAt: new Date().toISOString()
+            });
+
+            // Show success message
+            const msgEl = document.getElementById("signupMessage");
+            if (msgEl) {
+              msgEl.textContent = "Account created successfully! Redirecting...";
+              msgEl.style.color = "lightgreen";
+            }
+
+            // Redirect to profile page after a short delay
+            setTimeout(() => {
+              window.location.href = "profile.html";
+            }, 1200);
+
+          } catch (error) {
+            console.error("Signup error:", error);
+            const msgEl = document.getElementById("signupMessage");
+            if (msgEl) {
+              msgEl.textContent = error.message;
+              msgEl.style.color = "salmon";
+            } else {
+              alert(error.message);
+            }
+          }
+        });
+      }
+  </script>
 
 </body>
 </html>
