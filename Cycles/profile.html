@@ -5,24 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Profile – Cosmic Cycle Calendar</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="js/firebase.js"></script>
-  <script type="module" src="js/script.js"></script> <!-- replaced profile.js with your main -->
 </head>
 <body>
 
   <div class="profile-box wide">
-    <!-- Centered Title -->
     <h1 class="main-title">Cosmic Cycle Calendar</h1>
 
-    <!-- Profile Picture -->
     <div class="profile-picture-container">
       <img id="profilePic" src="images/default-avatar.png" alt="Profile Picture" class="profile-pic">
     </div>
 
-    <!-- Subheading -->
     <h2>Cosmic Calibration</h2>
 
-    <!-- User Info Section -->
     <div class="profile-section">
       <p><strong>Username:</strong> <span id="displayUsername">Loading...</span></p>
       <p><strong>Email:</strong> <span id="displayEmail">Loading...</span></p>
@@ -33,7 +27,6 @@
 
     <div class="divider"></div>
 
-    <!-- Buttons -->
     <div class="profile-actions">
       <button id="editProfileBtn">Edit Profile</button>
       <button id="myCosmicCycleBtn">My Cosmic Cycle</button>
@@ -43,62 +36,10 @@
     <div id="profileMessage" class="auth-message"></div>
   </div>
 
-  <script type="module">
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-    const usernameSpan = document.getElementById('displayUsername');
-    const emailSpan = document.getElementById('displayEmail');
-    const genderSpan = document.getElementById('displayGender');
-    const pronounsSpan = document.getElementById('displayPronouns');
-    const birthdaySpan = document.getElementById('displayBirthday');
-    const myCosmicCycleBtn = document.getElementById('myCosmicCycleBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const profilePic = document.getElementById('profilePic');
-
-    if (firebaseAuth) {
-      firebaseAuth.onAuthStateChanged(async (user) => {
-        if (!user) {
-          window.location.href = 'login.html';
-          return;
-        }
-
-        emailSpan.textContent = user.email;
-
-        const userRef = doc(firebaseDB, 'users', user.uid);
-        const snap = await getDoc(userRef);
-
-        if (snap.exists()) {
-          const data = snap.data();
-          usernameSpan.textContent = data.username || 'Not set';
-          genderSpan.textContent = data.gender || 'Not set';
-          pronounsSpan.textContent = data.pronouns || 'Not set';
-          birthdaySpan.textContent = data.birthday || 'Not set';
-
-          if (data.photoURL && profilePic) {
-            profilePic.src = data.photoURL;
-          }
-        } else {
-          usernameSpan.textContent = 'Not set';
-        }
-      });
-    }
-
-    myCosmicCycleBtn.addEventListener('click', () => {
-      window.location.href = 'cycles.html';
-    });
-
-    logoutBtn.addEventListener('click', async () => {
-      await firebaseAuth.signOut();
-      window.location.href = 'login.html';
-    });
-
-    editProfileBtn.addEventListener('click', () => {
-      window.location.href = 'edit-profile.html';
-    });
-  </script>
-
+  <!-- Modular JS -->
+  <script type="module" src="js/profile.js"></script>
 </body>
 </html>
+
 
 
