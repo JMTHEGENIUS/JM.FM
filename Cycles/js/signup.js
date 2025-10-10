@@ -1,6 +1,6 @@
-import { createUserWithEmailAndPassword, updateProfile } 
+import { createUserWithEmailAndPassword, updateProfile }
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { doc, setDoc } 
+import { doc, setDoc }
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { firebaseAuth, firebaseDB } from "./firebase.js";
 

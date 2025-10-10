@@ -1,4 +1,4 @@
-// profile.js
+// === profile.js ===
 import { firebaseAuth, firebaseDB } from './firebase.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
@@ -47,10 +47,57 @@ firebaseAuth.onAuthStateChanged(async (user) => {
   }
 });
 
-// Button actions
-myCosmicCycleBtn.addEventListener('click', () => {
-  window.location.assign('cycles.html');
+// === My Cosmic Cycle button logic (fixed for unified flow) ===
+myCosmicCycleBtn.addEventListener('click', async () => {
+  const user = firebaseAuth.currentUser;
+  if (!user) {
+    alert("You must be logged in.");
+    return window.location.assign('login.html');
+  }
+
+  try {
+    const userRef = doc(firebaseDB, 'users', user.uid);
+    const snap = await getDoc(userRef);
+    if (!snap.exists()) {
+      alert("Profile data not found. Please fill out your profile first.");
+      return;
+    }
+
+    const data = snap.data();
+    const { fullName, birthday, birthTime, birthLocation } = data;
+
+    if (!birthday) {
+      alert("Please add your birthday in your profile before continuing.");
+      return;
+    }
+
+    // Create a clean blueprint payload (no numerology/zodiac here — let cycles.html handle that)
+    const cosmicBlueprint = {
+      source: "profile",
+      fullName: fullName || "",
+      birthday,
+      birthTime: birthTime || "",
+      birthLocation: birthLocation || ""
+    };
+
+    // Store unified key that script.js will recognize
+    localStorage.setItem("cosmicBlueprint", JSON.stringify(cosmicBlueprint));
+    localStorage.setItem("cosmicBlueprint_source", "profile");
+
+    // Remove old conflicting keys
+    ["birthday", "birthDate", "selectedDate", "cosmicBlueprint_index"].forEach(k => {
+      localStorage.removeItem(k);
+    });
+
+    // Redirect to cycles page
+    window.location.assign("cycles.html");
+
+  } catch (error) {
+    console.error("Error preparing cosmic cycle:", error);
+    alert("Could not load your cosmic cycle. Please try again.");
+  }
 });
+
 
 editProfileBtn.addEventListener('click', () => {
   window.location.assign('edit-profile.html');
@@ -66,3 +113,4 @@ logoutBtn.addEventListener('click', async () => {
     profileMessage.style.color = 'salmon';
   }
 });
+

@@ -42,6 +42,8 @@ if (generateBtn) {
 }
 
 
+
+
 // === ALL OTHER PAGES ===
 document.addEventListener("DOMContentLoaded", () => {
     const recentBirthdayStr = localStorage.getItem('recentBirthday');
@@ -92,6 +94,22 @@ document.addEventListener("DOMContentLoaded", () => {
             cyclesContainer.appendChild(div);
         });
     }
+            // full cosmic blueprint button logic
+          const fullBlueprintBtn = document.getElementById('fullBlueprintBtn');
+
+          fullBlueprintBtn.addEventListener('click', () => {
+              const blueprintSource = localStorage.getItem('cosmicBlueprint_source');
+
+              if (blueprintSource === 'profile') {
+                  // Logged-in user with profile: go to full blueprint page
+                  window.location.href = 'cosmic-blueprint.html';
+              } else {
+                  // Guest or incomplete profile: redirect to signup
+                  alert("Sign up to unlock your full cosmic blueprint!");
+                  window.location.href = 'signup.html';
+              }
+          });
+
 
     // --- WEEKS PAGE ---
     const weeksContainer = document.getElementById('weeksContainer');
@@ -752,5 +770,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.location.href = 'edit-profile.html';
   });
 });
+
 
 
