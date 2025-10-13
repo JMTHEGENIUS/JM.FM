@@ -1,11 +1,8 @@
-import { createUserWithEmailAndPassword, updateProfile }
+import { createUserWithEmailAndPassword, updateProfile } 
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { doc, setDoc }
+import { doc, setDoc } 
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { firebaseAuth, firebaseDB } from "./firebase.js";
-
-const auth = firebaseAuth;
-const db = firebaseDB;
 
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signupForm");
@@ -32,43 +29,64 @@ document.addEventListener("DOMContentLoaded", () => {
     signupMessage.style.color = "lightblue";
 
     try {
-      // Create user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // 🔹 Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
       const user = userCredential.user;
 
-      // Update display name
+      // 🔹 Update Firebase Auth displayName
       await updateProfile(user, { displayName: username });
 
-      // Save minimal info to Firestore
-      await setDoc(doc(db, "users", user.uid), {
+      // 🔹 Save to Firestore (can expand later for birth data)
+      await setDoc(doc(firebaseDB, "users", user.uid), {
         username,
         email,
+        fullName: username,
+        birthday: "",
+        birthTime: "",
+        birthLocation: "",
         createdAt: new Date().toISOString(),
       });
 
-      // ✅ Redirect immediately after success
-      window.location.href = "profile.html";
+      // 🔹 Store locally for immediate access
+      localStorage.setItem("user", JSON.stringify({
+        uid: user.uid,
+        username,
+        fullName: username,
+        birthday: "",
+        birthTime: "",
+        birthLocation: "",
+        email,
+      }));
+
+      signupMessage.textContent = "✅ Account created! Redirecting...";
+      signupMessage.style.color = "lightgreen";
+
+      // ✅ Redirect after storing data
+      setTimeout(() => {
+        window.location.assign("profile.html");
+      }, 800);
 
     } catch (error) {
       console.error("Signup error:", error);
-      signupMessage.textContent = error.code === "auth/email-already-in-use"
-        ? "This email is already registered."
-        : error.message;
+      signupMessage.textContent =
+        error.code === "auth/email-already-in-use"
+          ? "This email is already registered."
+          : error.message;
       signupMessage.style.color = "salmon";
     }
   };
 
-  // Handle form submit (Enter key or button click)
-  signupForm.addEventListener("submit", async (e) => {
+  // Handle form submit or click
+  signupForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    await handleSignup();
+    handleSignup();
   });
 
-  // Also allow clicking the Sign Up button
-  signupBtn.addEventListener("click", async (e) => {
+  signupBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    await handleSignup();
+    handleSignup();
   });
 });
+
 
 

@@ -94,21 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
             cyclesContainer.appendChild(div);
         });
     }
-            // full cosmic blueprint button logic
-          const fullBlueprintBtn = document.getElementById('fullBlueprintBtn');
-
-          fullBlueprintBtn.addEventListener('click', () => {
-              const blueprintSource = localStorage.getItem('cosmicBlueprint_source');
-
-              if (blueprintSource === 'profile') {
-                  // Logged-in user with profile: go to full blueprint page
-                  window.location.href = 'cosmic-blueprint.html';
-              } else {
-                  // Guest or incomplete profile: redirect to signup
-                  alert("Sign up to unlock your full cosmic blueprint!");
-                  window.location.href = 'signup.html';
-              }
-          });
 
 
     // --- WEEKS PAGE ---
@@ -459,71 +444,6 @@ document.querySelectorAll('#weeksContainer .week-box').forEach((box, index) => {
 showCycleDescription(1);
 
 
-const cycleColors = [
-  "#FFD700", // Sun - Gold
-  "#F56F00", // Moon - Orange
-  "#C13EFF", // Mars - Purple
-  "#00CFFF", // Mercury - Light Blue
-  "#00FF90", // Jupiter - Green
-  "#FF4B91", // Venus - Pink
-  "#7080FF"  // Saturn - Indigo
-];
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const bar = document.getElementById("timelineBar");
-  const marker = document.getElementById("timelineMarker");
-  if (!bar || !marker) return;
-
-  const page = document.body.dataset.page; // we'll tag each page type
-  const colors = [
-    "#FFD700","#F56F00","#C13EFF","#00CFFF",
-    "#00FF90","#FF4B91","#7080FF"
-  ];
-
-  const cycleStart = new Date(localStorage.getItem("cycleStart"));
-  const today = new Date();
-
-  const dayOfYear = Math.floor((today - cycleStart) / (1000*60*60*24));
-  const currentCycle = Math.floor(dayOfYear / 52);  // 0–6
-  const currentWeek = Math.floor(dayOfYear / 7) % 7; // 0–6 inside current cycle
-  const currentDay = dayOfYear % 7; // 0–6 inside week
-
-  // Helper: create colored segment bar
-  function renderSegments(total, activeIndex) {
-    bar.innerHTML = "";
-    for (let i = 0; i < total; i++) {
-      const seg = document.createElement("div");
-      seg.className = "timeline-segment";
-      seg.style.background = colors[i % colors.length];
-      if (i === activeIndex) seg.classList.add("active");
-      bar.appendChild(seg);
-    }
-  }
-
-  if (page === "cycles") {
-    renderSegments(7, currentCycle);
-    marker.textContent = "Cycle " + (currentCycle + 1);
-    marker.onclick = () => window.location.href = "weeks.html";
-  }
-
-  if (page === "weeks") {
-    renderSegments(7, currentWeek);
-    marker.textContent = "Week " + (currentWeek + 1);
-    marker.onclick = () => window.location.href = "daily.html";
-  }
-
-  if (page === "daily") {
-    renderSegments(7, currentDay);
-    marker.textContent = "Today";
-    marker.onclick = () => window.location.href = "daily.html";
-  }
-});
-
-
-
-
-
 // === Update birthday box in left column with next upcoming birthday + countdown ===
 const userBirthdayEl = document.getElementById('userBirthday');
 if (userBirthdayEl) {
@@ -566,142 +486,392 @@ if (userBirthdayEl) {
 
 // === ZODIAC & NUMEROLOGY SECTION (replace the old block with this) ===
 (function() {
-  const zodiacSignEl = document.getElementById("zodiacSign");
   const zodiacMeaningEl = document.getElementById("zodiacMeaning");
   const lifePathNumEl = document.getElementById("lifePathNum");
   const lifePathMeaningEl = document.getElementById("lifePathMeaning");
   const dayNumEl = document.getElementById("dayNum");
   const dayNumMeaningEl = document.getElementById("dayNumMeaning");
+});
 
-  const storedBirthday = localStorage.getItem("birthday");
-  if (!storedBirthday) return; // nothing to do
-
-  // Robust birthday parser: supports YYYY-MM-DD, MM-DD-YYYY, MM/DD/YYYY, "11-30-1997", etc.
-  function parseBirthday(str) {
-    const parts = str.split(/[^0-9]+/).filter(Boolean);
-    if (parts.length === 3) {
-      // If first part is 4 digits assume ISO-style (YYYY-MM-DD)
-      if (parts[0].length === 4) {
-        return { year: parseInt(parts[0], 10), month: parseInt(parts[1], 10), day: parseInt(parts[2], 10) };
-      } else {
-        // otherwise assume MM-DD-YYYY or MM/DD/YYYY
-        return { month: parseInt(parts[0], 10), day: parseInt(parts[1], 10), year: parseInt(parts[2], 10) };
-      }
-    }
-    // fallback: try Date parsing
-    const d = new Date(str);
-    if (!isNaN(d)) return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
-    return null;
-  }
-
-  const parsed = parseBirthday(storedBirthday);
-  if (!parsed) {
-    console.warn("Could not parse birthday:", storedBirthday);
-    return;
-  }
-
-  const { day, month, year } = parsed;
-
-  // --- Zodiac (kept same as what you've been using) ---
-  const zodiacData = [
-    { sign: "Capricorn", start: [12, 22], end: [1, 19], meaning: "Practical, grounded, and ambitious. You climb steadily toward your purpose." },
-    { sign: "Aquarius", start: [1, 20], end: [2, 18], meaning: "Visionary, independent, and humanitarian. You walk to your own rhythm." },
-    { sign: "Pisces", start: [2, 19], end: [3, 20], meaning: "Empathic, imaginative, and spiritual. You feel deeply and see beyond form." },
-    { sign: "Aries", start: [3, 21], end: [4, 19], meaning: "Bold, fiery, and pioneering. You initiate new cycles with courage." },
-    { sign: "Taurus", start: [4, 20], end: [5, 20], meaning: "Stable, artistic, and sensual. You manifest beauty through consistency." },
-    { sign: "Gemini", start: [5, 21], end: [6, 20], meaning: "Curious, communicative, and quick-minded. You thrive through connection and learning." },
-    { sign: "Cancer", start: [6, 21], end: [7, 22], meaning: "Nurturing, protective, and intuitive. You embody the heart of home and care." },
-    { sign: "Leo", start: [7, 23], end: [8, 22], meaning: "Radiant, generous, and strong. You express divine light through creativity." },
-    { sign: "Virgo", start: [8, 23], end: [9, 22], meaning: "Analytical, healing, and devoted. You refine the world through service." },
-    { sign: "Libra", start: [9, 23], end: [10, 22], meaning: "Balanced, graceful, and diplomatic. You bring harmony and beauty wherever you go." },
-    { sign: "Scorpio", start: [10, 23], end: [11, 21], meaning: "Transformative, passionate, and intense. You are rebirth embodied." },
-    { sign: "Sagittarius", start: [11, 22], end: [12, 21], meaning: "Adventurous, wise, and freedom-loving. You seek truth through exploration." }
-  ];
-
-  const zodiac = zodiacData.find(z => (
-    (month === z.start[0] && day >= z.start[1]) ||
-    (month === z.end[0] && day <= z.end[1])
-  ));
-
-  if (zodiacSignEl) zodiacSignEl.textContent = zodiac ? zodiac.sign : "Unknown";
-  if (zodiacMeaningEl) zodiacMeaningEl.textContent = zodiac ? zodiac.meaning : "";
-
-  // --- Numerology helpers ---
+// Robust birthday parser: YYYY-MM-DD, MM-DD-YYYY, MM/DD/YYYY
+// === ZODIAC & NUMEROLOGY SECTION (replace old block with this) ===
+(function() {
+  // ==================== UTILITY FUNCTIONS ====================
   function sumDigits(n) {
-    return String(n).split("").map(Number).reduce((a, b) => a + b, 0);
+    return String(n).split("").map(Number).reduce((a,b)=>a+b,0);
   }
 
-  // Reduce preserving master numbers 11,22,33.
+  // Reduce numbers while preserving master numbers 11, 22, 33
   function reduceMasterSafe(n) {
     n = Number(n);
-    // If it's already a master number, keep it
-    if ([11, 22, 33].includes(n)) return n;
-    // Reduce until single digit or a master number appears
-    while (n > 9 && ![11, 22, 33].includes(n)) {
+    if ([11,22,33].includes(n)) return n;
+    while (n > 9 && ![11,22,33].includes(n)) {
       n = sumDigits(n);
       if ([11,22,33].includes(n)) return n;
     }
     return n;
   }
 
-  // ---- Life Path calculation (correct method for preserving masters) ----
-  // Reduce month/day/year individually (preserving masters) then sum and reduce (preserving masters)
-  function calcLifePath(yearVal, monthVal, dayVal) {
-    const mReduced = reduceMasterSafe(monthVal);         // keeps 11 if month is 11
-    const dReduced = reduceMasterSafe(dayVal);           // e.g., 30 -> 3
-    const yearDigitSum = sumDigits(yearVal);             // e.g., 1997 -> 26
-    const yReduced = reduceMasterSafe(yearDigitSum);     // 26 -> 8
-
-    const total = mReduced + dReduced + yReduced;       // e.g., 11 + 3 + 8 = 22
-    const lifePath = reduceMasterSafe(total);            // preserve master 22
-
-    // return breakdown too so you can inspect results in the console
-    return { lifePath, breakdown: { month: mReduced, day: dReduced, year: yReduced, total } };
+  // Robust birthday parser: supports YYYY-MM-DD, MM-DD-YYYY, MM/DD/YYYY
+  function parseBirthday(str) {
+    const parts = str.split(/[^0-9]+/).filter(Boolean);
+    if (parts.length === 3) {
+      if (parts[0].length === 4) return { year:+parts[0], month:+parts[1], day:+parts[2] };
+      return { month:+parts[0], day:+parts[1], year:+parts[2] };
+    }
+    const d = new Date(str);
+    if (!isNaN(d)) return { year:d.getFullYear(), month:d.getMonth()+1, day:d.getDate() };
+    return null;
   }
 
-  // Day number: reduce day-of-month (30 -> 3). If someone is born on 11 we keep 11 as master day.
-  function calcDayNum(dayVal) {
+  // ==================== NUMEROLOGY ====================
+  function calculateLifePath(yearVal, monthVal, dayVal) {
+    const m = reduceMasterSafe(monthVal);
+    const d = reduceMasterSafe(dayVal);
+    const y = reduceMasterSafe(sumDigits(yearVal));
+    const total = m + d + y;
+    return reduceMasterSafe(total);
+  }
+
+  function calculateDayNumber(dayVal) {
     return reduceMasterSafe(dayVal);
   }
 
-  // --- Compute and display ---
-  const { lifePath, breakdown } = calcLifePath(year, month, day);
-  const dayNumber = calcDayNum(day);
+  function calculateDestinyNumber(fullName) {
+    if (!fullName) return null;
+    const letters = fullName.toUpperCase().replace(/[^A-Z]/g,'').split('');
+    const letterValues = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+                          J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+                          S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+    const total = letters.reduce((sum,l)=>sum+(letterValues[l]||0),0);
+    return reduceMasterSafe(total);
+  }
 
-  if (lifePathNumEl) lifePathNumEl.textContent = lifePath;
-  if (dayNumEl) dayNumEl.textContent = dayNumber;
+  function calculateSoulUrgeNumber(fullName) {
+    if (!fullName) return null;
+    const vowels = fullName.toUpperCase().match(/[AEIOUY]/g);
+    if (!vowels) return null;
+    const letterValues = {A:1,E:5,I:9,O:6,U:3,Y:7};
+    const total = vowels.reduce((sum,l)=>sum+(letterValues[l]||0),0);
+    return reduceMasterSafe(total);
+  }
 
-  const lifePathMeanings = {
-    1: "Leader and pioneer — independence, originality, and courage.",
-    2: "Diplomat and peacemaker — harmony and cooperation.",
-    3: "Creative communicator — joy, artistry, and expression.",
-    4: "Builder and stabilizer — structure, service, and discipline.",
-    5: "Adventurer — freedom, exploration, and adaptability.",
-    6: "Nurturer — love, responsibility, and beauty.",
-    7: "Seeker of truth — introspection and spiritual study.",
-    8: "Manifestor — material success and responsibility.",
-    9: "Humanitarian — compassion and completion.",
-    11: "Master Illuminator — intuition, inspiration, spiritual teaching.",
-    22: "Master Builder — turning vision into practical reality.",
-    33: "Master Teacher — unconditional love and service."
-  };
+    const numerologyMeanings = {
+      lifePath:{1:"Leadership, independence, and self-mastery.",
+                2:"Cooperation, diplomacy, and intuitive harmony.",
+                3:"Creativity, expression, and joyful communication.",
+                4:"Discipline, structure, and reliable manifestation.",
+                5:"Freedom, adaptability, and exploration.",
+                6:"Responsibility, nurturing, and love.",
+                7:"Spirituality, introspection, and deep wisdom.",
+                8:"Power, success, and material manifestation.",
+                9:"Compassion, completion, and global service.",
+                11:"Spiritual illumination and visionary intuition.",
+                22:"Master builder, manifesting dreams into form.",
+                33:"Master teacher, divine compassion in action."},
+      destiny:{1:"Lead with innovation and courage.",
+               2:"Peacekeeping and emotional intelligence.",
+               3:"Light through art, humor, and communication.",
+               4:"Build lasting foundations of security and trust.",
+               5:"Experience freedom and inspire change.",
+               6:"Nurture others through beauty, love, and service.",
+               7:"Seek truth and share higher wisdom.",
+               8:"Master power, leadership, and wealth consciousness.",
+               9:"Complete cycles and heal the collective.",
+               11:"Be a lightbearer and spiritual teacher.",
+               22:"Manifest grand visions for humanity.",
+               33:"Guide others through sacred compassion."},
+      soulUrge:{1:"Desire independence and to be seen as a leader.",
+                2:"Long for harmony and deep emotional connection.",
+                3:"Crave expression, laughter, and creativity.",
+                4:"Seek stability, order, and meaningful work.",
+                5:"Yearn for freedom, travel, and new experiences.",
+                6:"Desire family, love, and beauty in all forms.",
+                7:"Seek spiritual truth and solitude for reflection.",
+                8:"Desire success, recognition, and material mastery.",
+                9:"Crave connection, purpose, and emotional healing.",
+                11:"Inspire others through divine light.",
+                22:"Create lasting spiritual legacies.",
+                33:"Embody unconditional love and sacred teaching."},
+      dayNum: {1:"A pioneer day — take charge and lead through initiative.",
+               2:"A cooperative day — focus on balance, partnership, and patience.",
+               3:"A creative day — express yourself freely through art or conversation.",
+               4:"A productive day — build routines and finish what you start.",
+               5:"A dynamic day — explore something new or change your scenery.",
+               6:"A nurturing day — tend to relationships, home, and harmony.",
+               7:"A reflective day — seek solitude, study, or spiritual insight.",
+               8:"An empowered day — set goals and take bold, decisive action.",
+               9:"A compassionate day — release old energy and help someone in need.",
+               11:"A visionary day — follow intuition and share inspired ideas.",
+               22:"A manifesting day — plan tangible steps for a long-term dream.",
+               33:"A heart-centered day — guide or teach through love and example."}
+    };
 
-  if (lifePathMeaningEl) lifePathMeaningEl.textContent = lifePathMeanings[lifePath] || "";
-  if (dayNumMeaningEl) dayNumMeaningEl.textContent =
-    `Day ${dayNumber} reflects your daily essence — ${lifePathMeanings[dayNumber] || "expressed through instinct and daily rhythm."}`;
+  // ==================== ZODIAC ====================
+  const zodiacData = [
+    { sign:"Capricorn", start:[12,22], end:[1,19], meaning:"Practical, grounded, and ambitious." },
+    { sign:"Aquarius", start:[1,20], end:[2,18], meaning:"Visionary, independent, and humanitarian." },
+    { sign:"Pisces", start:[2,19], end:[3,20], meaning:"Empathic, imaginative, and spiritual." },
+    { sign:"Aries", start:[3,21], end:[4,19], meaning:"Bold, fiery, and pioneering." },
+    { sign:"Taurus", start:[4,20], end:[5,20], meaning:"Stable, artistic, and sensual." },
+    { sign:"Gemini", start:[5,21], end:[6,20], meaning:"Curious, communicative, and quick-minded." },
+    { sign:"Cancer", start:[6,21], end:[7,22], meaning:"Nurturing, protective, and intuitive." },
+    { sign:"Leo", start:[7,23], end:[8,22], meaning:"Radiant, generous, and strong." },
+    { sign:"Virgo", start:[8,23], end:[9,22], meaning:"Analytical, healing, and devoted." },
+    { sign:"Libra", start:[9,23], end:[10,22], meaning:"Balanced, graceful, and diplomatic." },
+    { sign:"Scorpio", start:[10,23], end:[11,21], meaning:"Transformative, passionate, and intense." },
+    { sign:"Sagittarius", start:[11,22], end:[12,21], meaning:"Adventurous, wise, and freedom-loving." }
+  ];
 
-  // Helpful console trace for debugging / learning:
-  console.group("Numerology trace");
-  console.log("Stored birthday:", storedBirthday);
-  console.log("Parsed (YYYY-MM-DD):", `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`);
-  console.log("Breakdown -> month reduced:", breakdown.month, ", day reduced:", breakdown.day, ", year reduced:", breakdown.year);
-  console.log("Sum:", breakdown.total, "→ lifePath:", lifePath);
-  console.log("dayNumber:", dayNumber);
-  console.groupEnd();
+  const zodiacMoonData = [
+    { sign:"Aries", meaning:"Your emotions ignite quickly; you crave excitement and act on feeling." },
+    { sign:"Taurus", meaning:"You find comfort in stability and sensual pleasure — slow to anger, slow to change." },
+    { sign:"Gemini", meaning:"Your feelings shift like the wind; you need mental stimulation and variety." },
+    { sign:"Cancer", meaning:"You’re deeply nurturing and sensitive — emotions ebb and flow like the tides." },
+    { sign:"Leo", meaning:"Your heart seeks recognition and warmth — you shine through affection and pride." },
+    { sign:"Virgo", meaning:"You analyze emotions; peace comes from order, service, and quiet acts of love." },
+    { sign:"Libra", meaning:"Your heart seeks harmony and beauty; balance in relationships is vital." },
+    { sign:"Scorpio", meaning:"You feel everything intensely — passion and transformation fuel your emotions." },
+    { sign:"Sagittarius", meaning:"You crave emotional freedom — optimism and exploration keep your spirit alive." },
+    { sign:"Capricorn", meaning:"You manage feelings with discipline — you express care through responsibility." },
+    { sign:"Aquarius", meaning:"You need emotional independence — you love through friendship and ideals." },
+    { sign:"Pisces", meaning:"Your emotions are boundless and compassionate — intuition is your language of love." }
+];
 
-  // Optionally store values for other pages (keeps your existing flow)
-  localStorage.setItem("lifePathNum", String(lifePath));
-  localStorage.setItem("dayNum", String(dayNumber));
+  const zodiacRisingData = [
+    { sign:"Aries", meaning:"You appear bold, spontaneous, and direct — people see your fire first." },
+    { sign:"Taurus", meaning:"You come across as calm, steady, and sensual — grounded in presence." },
+    { sign:"Gemini", meaning:"You project curiosity and wit — adaptable and talkative in every crowd." },
+    { sign:"Cancer", meaning:"You seem nurturing and intuitive — others feel safe around your energy." },
+    { sign:"Leo", meaning:"You radiate confidence and charisma — a natural spotlight follows you." },
+    { sign:"Virgo", meaning:"You appear organized, thoughtful, and helpful — others trust your discernment." },
+    { sign:"Libra", meaning:"You seem charming, balanced, and stylish — relationships shape your identity." },
+    { sign:"Scorpio", meaning:"You exude mystery and intensity — people sense your depth immediately." },
+    { sign:"Sagittarius", meaning:"You give off adventurous, optimistic vibes — open-minded and inspiring." },
+    { sign:"Capricorn", meaning:"You appear mature and reliable — ambition and structure define your aura." },
+    { sign:"Aquarius", meaning:"You come across as unique and independent — a visionary energy surrounds you." },
+    { sign:"Pisces", meaning:"You appear dreamy and empathetic — your vibe is mystical and fluid." }
+];
+
+  function getZodiac(month, day) {
+    return zodiacData.find(z => (month===z.start[0] && day>=z.start[1]) || (month===z.end[0] && day<=z.end[1])) || { sign:"Unknown", meaning:"" };
+  }
+
+ 
+
+
+
+
+  // ==================== ARCHETYPE ====================
+    function generateArchetype(lifePath, sunSign, moonSign, risingSign) {
+      const archetypes = {
+        1:"The Celestial Leader",2:"The Harmonizer of Worlds",3:"The Luminous Creator",
+        4:"The Star Architect",5:"The Cosmic Explorer",6:"The Sacred Healer",
+        7:"The Mystic Seer",8:"The Galactic Builder",9:"The Universal Visionary",
+        11:"The Light Messenger",22:"The Master Alchemist",33:"The Divine Teacher"
+      };
+      const starArchetype = archetypes[lifePath] || "The Cosmic Wanderer";
+
+      const elementMap = { Fire:["Aries","Leo","Sagittarius"], Earth:["Taurus","Virgo","Capricorn"],
+                          Air:["Gemini","Libra","Aquarius"], Water:["Cancer","Scorpio","Pisces"] };
+
+      const signs = [sunSign, moonSign, risingSign];
+      const elementCount = { Fire:0, Earth:0, Air:0, Water:0 };
+      for (const [el, signsArr] of Object.entries(elementMap)) {
+        elementCount[el] = signs.filter(s => signsArr.includes(s)).length;
+      }
+
+      const dominantElement = Object.keys(elementCount).reduce((a,b)=>elementCount[a]>=elementCount[b]?a:b);
+      const elementalBalance = Object.entries(elementCount).map(([el,count])=>`${el}: ${count}`).join(", ");
+
+      const fixedStarSets = {
+        Fire:[{name:"Aldebaran",meaning:"Bravery and sacred mission — the Eye of the Bull."},
+              {name:"Regulus",meaning:"Royalty, heart-centered leadership, divine courage."}],
+        Earth:[{name:"Spica",meaning:"Harvest, mastery, abundance, and grace."},
+              {name:"Capella",meaning:"Wisdom of the Earth and nurturing creation."}],
+        Air:[{name:"Vega",meaning:"Harmony, inspiration, and celestial artistry."},
+            {name:"Altair",meaning:"Intellectual clarity and the power of ideas."}],
+        Water:[{name:"Fomalhaut",meaning:"Spiritual dreams, intuition, and sacred imagination."},
+              {name:"Achernar",meaning:"Emotional renewal and compassion through change."}]
+      };
+
+      const fixedStars = fixedStarSets[dominantElement] || [
+        {name:"Sirius",meaning:"Illumination and divine guidance."},
+        {name:"Antares",meaning:"Transformation and deep inner power."}
+      ];
+
+      const activations = {
+        1:"Take initiative — start the project you've been delaying.",
+        2:"Meditate on balance and partnership daily.",
+        3:"Write, sing, or create something joyful this week.",
+        4:"Build a system or habit that grounds your vision.",
+        5:"Travel or explore something new to reset your spirit.",
+        6:"Practice empathy and offer healing service to someone.",
+        7:"Spend a night under the stars journaling your insights.",
+        8:"Set tangible goals aligned with your higher purpose.",
+        9:"Release the past and act from compassion, not control.",
+        11:"Share a message or vision that uplifts the collective.",
+        22:"Begin manifesting a dream that benefits your community.",
+        33:"Guide someone who needs support — teach through love."
+      };
+      const activationSteps = activations[lifePath] || "Ground your cosmic insight into daily action.";
+
+      return { starArchetype, dominantElement, elementalBalance, fixedStars, activationSteps };
+    }
+
+ // ==================== MAIN DISPLAY ====================
+  document.addEventListener("DOMContentLoaded", () => {
+    const birthdayStr = localStorage.getItem("birthday");
+    const fullName = localStorage.getItem("fullName") || "Mystery Soul";
+    if (!birthdayStr) return;
+
+    const parsed = parseBirthday(birthdayStr);
+    if (!parsed) return;
+    const { year, month, day } = parsed;
+
+    // Zodiac
+    const zodiac = getZodiac(month, day);
+    if (document.getElementById("zodiacSign")) document.getElementById("zodiacSign").textContent = zodiac.sign;
+    if (document.getElementById("zodiacMeaning")) document.getElementById("zodiacMeaning").textContent = zodiac.meaning;
+    
+
+    // Numerology
+    const lifePath = calculateLifePath(year, month, day);
+    const destiny = calculateDestinyNumber(fullName);
+    const soulUrge = calculateSoulUrgeNumber(fullName);
+    const dayNumber = calculateDayNumber(day);
+
+    if (document.getElementById("lifePathNum")) document.getElementById("lifePathNum").textContent = lifePath;
+    if (document.getElementById("lifePathMeaning")) document.getElementById("lifePathMeaning").textContent = numerologyMeanings.lifePath[lifePath];
+    if (document.getElementById("destinyNum")) document.getElementById("destinyNum").textContent = destiny;
+    if (document.getElementById("destinyMeaning")) document.getElementById("destinyMeaning").textContent = numerologyMeanings.destiny[destiny];
+    if (document.getElementById("soulUrgeNum")) document.getElementById("soulUrgeNum").textContent = soulUrge;
+    if (document.getElementById("soulUrgeMeaning")) document.getElementById("soulUrgeMeaning").textContent = numerologyMeanings.soulUrge[soulUrge];
+    if (document.getElementById("dayNum")) document.getElementById("dayNum").textContent = dayNumber;
+    if (document.getElementById("dayNumMeaning")) document.getElementById("dayNumMeaning").textContent = numerologyMeanings.dayNum[dayNumber];
+
+    // Archetype
+    const moonSign = localStorage.getItem("moonSign") || "Gemini";
+    const risingSign = localStorage.getItem("risingSign") || "Leo";
+    const archetype = generateArchetype(lifePath, zodiac.sign, moonSign, risingSign);
+
+    if (document.getElementById("archetype"))
+      document.getElementById("archetype").textContent = archetype.starArchetype;
+    if (document.getElementById("dominantElement"))
+      document.getElementById("dominantElement").textContent = archetype.dominantElement;
+    if (document.getElementById("elementalBalance"))
+      document.getElementById("elementalBalance").textContent = archetype.elementalBalance;
+    if (document.getElementById("fixedStars"))
+      document.getElementById("fixedStars").innerHTML = archetype.fixedStars
+        .map(f => `<li><strong>${f.name}:</strong> ${f.meaning}</li>`)
+        .join('');
+    if (document.getElementById("activationSteps"))
+      document.getElementById("activationSteps").textContent = archetype.activationSteps;
+
+    console.log("🔮 Archetype generated:", archetype);
+  });
+
+  // ==================== DISPLAY ====================
+  // document.addEventListener("DOMContentLoaded",()=>{
+  //   const birthdayStr = localStorage.getItem("birthday");
+  //   const fullName = localStorage.getItem("fullName") || "Mystery Soul";
+  //   if (!birthdayStr) return;
+
+  //   const { year, month, day } = parseBirthday(birthdayStr);
+
+  //   // Zodiac
+  //   const zodiac = getZodiac(month, day);
+  //   const zodiacSignEl = document.getElementById("zodiacSign");
+  //   const zodiacMeaningEl = document.getElementById("zodiacMeaning");
+  //   if(zodiacSignEl) zodiacSignEl.textContent = zodiac.sign;
+  //   if(zodiacMeaningEl) zodiacMeaningEl.textContent = zodiac.meaning;
+
+  //   // Numerology
+  //   const lifePath = calculateLifePath(year, month, day);
+  //   const destiny = calculateDestinyNumber(fullName);
+  //   const soulUrge = calculateSoulUrgeNumber(fullName);
+
+  //   const lifePathNumEl = document.getElementById("lifePathNum");
+  //   const lifePathMeaningEl = document.getElementById("lifePathMeaning");
+  //   const dayNumEl = document.getElementById("dayNum");
+  //   const dayNumMeaningEl = document.getElementById("dayNumMeaning");
+  //   const destinyNumEl = document.getElementById("destinyNum");
+  //   const destinyMeaningEl = document.getElementById("destinyMeaning");
+  //   const soulUrgeNumEl = document.getElementById("soulUrgeNum");
+  //   const soulUrgeMeaningEl = document.getElementById("soulUrgeMeaning");
+
+  
+
+  //   if(lifePathNumEl) lifePathNumEl.textContent = lifePath;
+  //   if(lifePathMeaningEl) lifePathMeaningEl.textContent = numerologyMeanings.lifePath[lifePath];
+  //   if(dayNumEl) dayNumEl.textContent = dayNumber;
+  //   if(dayNumMeaningEl) dayNumMeaningEl.textContent = `Day ${dayNumber} reflects your daily essence — ${numerologyMeanings.lifePath[dayNumber] || "expressed through instinct and daily rhythm."}`;
+  //   if(destinyNumEl) destinyNumEl.textContent = destiny;
+  //   if(destinyMeaningEl) destinyMeaningEl.textContent = numerologyMeanings.destiny[destiny];
+  //   if(soulUrgeNumEl) soulUrgeNumEl.textContent = soulUrge;
+  //   if(soulUrgeMeaningEl) soulUrgeMeaningEl.textContent = numerologyMeanings.soulUrge[soulUrge];
+  // });
+
+
+//     // ==================== DISPLAY ON CYCLES PAGE ====================
+// document.addEventListener("DOMContentLoaded", () => {
+//   const birthdayStr = localStorage.getItem("birthday");
+//   const fullName = localStorage.getItem("fullName") || "Mystery Soul";
+
+//   if (!birthdayStr) return;
+//   const parsed = parseBirthday(birthdayStr);
+//   if (!parsed) return;
+//   const { year, month, day } = parsed;
+
+//   // 🌞 Zodiac
+//   const zodiac = getZodiac(month, day);
+//   if (document.getElementById("zodiacSign"))
+//     document.getElementById("zodiacSign").textContent = zodiac.sign;
+//   if (document.getElementById("zodiacMeaning"))
+//     document.getElementById("zodiacMeaning").textContent = zodiac.meaning;
+
+//   // 🔢 Numerology
+//   const lifePath = calculateLifePath(year, month, day);
+//   const destiny = calculateDestinyNumber(fullName);
+//   const soulUrge = calculateSoulUrgeNumber(fullName);
+
+//   if (document.getElementById("lifePathNum"))
+//     document.getElementById("lifePathNum").textContent = lifePath;
+//   if (document.getElementById("lifePathMeaning"))
+//     document.getElementById("lifePathMeaning").textContent = numerologyMeanings.lifePath[lifePath];
+//   if (document.getElementById("destinyNum"))
+//     document.getElementById("destinyNum").textContent = destiny;
+//   if (document.getElementById("destinyMeaning"))
+//     document.getElementById("destinyMeaning").textContent = numerologyMeanings.destiny[destiny];
+//   if (document.getElementById("soulUrgeNum"))
+//     document.getElementById("soulUrgeNum").textContent = soulUrge;
+//   if (document.getElementById("soulUrgeMeaning"))
+//     document.getElementById("soulUrgeMeaning").textContent = numerologyMeanings.soulUrge[soulUrge];
+
+
+
+//   // 🌌 Archetype
+//   const moonSign = localStorage.getItem("moonSign") || "Gemini";
+//   const risingSign = localStorage.getItem("risingSign") || "Leo";
+
+//   console.log("🔮 Archetype debug:", { lifePath, sunSign: zodiac.sign, moonSign, risingSign });
+
+//   const archetypeData = generateArchetype(lifePath, zodiac.sign, moonSign, risingSign);
+
+//   if (document.getElementById("archetype"))
+//     document.getElementById("archetype").textContent = archetypeData.starArchetype;
+//   if (document.getElementById("dominantElement"))
+//     document.getElementById("dominantElement").textContent = archetypeData.dominantElement;
+//   if (document.getElementById("elementalBalance"))
+//     document.getElementById("elementalBalance").textContent = archetypeData.elementalBalance;
+//   if (document.getElementById("fixedStars"))
+//     document.getElementById("fixedStars").innerHTML = archetypeData.fixedStars
+//       .map(f => `<li><strong>${f.name}:</strong> ${f.meaning}</li>`)
+//       .join('');
+//   if (document.getElementById("activationSteps"))
+//     document.getElementById("activationSteps").textContent = archetypeData.activationSteps;
+// });
+
 })();
 
 
@@ -722,54 +892,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// === DISPLAY PROFILE INFO ===
-document.addEventListener('DOMContentLoaded', async () => {
-  const usernameSpan = document.getElementById('displayUsername');
-  const emailSpan = document.getElementById('displayEmail');
-  const genderSpan = document.getElementById('displayGender');
-  const pronounsSpan = document.getElementById('displayPronouns');
-  const birthdaySpan = document.getElementById('displayBirthday');
-  const myCosmicCycleBtn = document.getElementById('myCosmicCycleBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const editProfileBtn = document.getElementById('editProfileBtn');
-
-  if (firebaseAuth) {
-    firebaseAuth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
-
-      emailSpan.textContent = user.email;
-
-      const userRef = doc(firebaseDB, 'users', user.uid);
-      const snap = await getDoc(userRef);
-
-      if (snap.exists()) {
-        const data = snap.data();
-        usernameSpan.textContent = data.username || 'Not set';
-        genderSpan.textContent = data.gender || 'Not set';
-        pronounsSpan.textContent = data.pronouns || 'Not set';
-        birthdaySpan.textContent = data.birthday || 'Not set';
-      } else {
-        usernameSpan.textContent = 'Not set';
-      }
-    });
-  }
-
-  myCosmicCycleBtn.addEventListener('click', () => {
-    window.location.href = 'cycles.html';
-  });
-
-  logoutBtn.addEventListener('click', async () => {
-    await firebaseAuth.signOut();
-    window.location.href = 'login.html';
-  });
-
-  editProfileBtn.addEventListener('click', () => {
-    window.location.href = 'edit-profile.html';
-  });
-});
 
 
 

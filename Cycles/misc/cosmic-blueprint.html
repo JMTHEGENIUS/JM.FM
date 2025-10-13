@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cosmic Blueprint</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="blueprint">
+  <main class="blueprint-page">
+    <h1>🌠 Your Cosmic Blueprint</h1>
+    <p class="subtitle">An expanded look into your Numerology, Astrology, and Star Archetype</p>
+
+    <!-- User Summary -->
+    <section id="userSummary" class="summary-section card">
+      <h2 id="userName">Loading...</h2>
+      <p><strong>Birthday:</strong> <span id="userBirthday"></span></p>
+      <p><strong>Birth Time:</strong> <span id="userBirthTime"></span></p>
+      <p><strong>Birth Location:</strong> <span id="userBirthLocation"></span></p>
+    </section>
+
+    <!-- Numerology Section -->
+    <section class="card">
+      <h2>🔢 Numerology Blueprint</h2>
+      <div class="section-content">
+        <p><strong>Life Path Number:</strong> <span id="lifePathNum"></span></p>
+        <p id="lifePathDesc"></p>
+        <p><strong>Destiny Number:</strong> <span id="destinyNum"></span></p>
+        <p id="destinyDesc"></p>
+        <p><strong>Soul Urge Number:</strong> <span id="soulUrgeNum"></span></p>
+        <p id="soulUrgeDesc"></p>
+      </div>
+    </section>
+
+    <!-- Astrology Section -->
+    <section class="card">
+      <h2>✨ Astrological Blueprint</h2>
+      <div class="section-content">
+        <p><strong>Sun Sign:</strong> <span id="sunSign"></span></p>
+        <p id="sunMeaning"></p>
+        <p><strong>Moon Sign:</strong> <span id="moonSign"></span></p>
+        <p id="moonMeaning"></p>
+        <p><strong>Rising Sign:</strong> <span id="risingSign"></span></p>
+        <p id="risingMeaning"></p>
+      </div>
+    </section>
+
+    <!-- Archetype Section -->
+    <section class="card">
+      <h2>🌌 Star Archetype & Cosmic Resonance</h2>
+      <div class="section-content">
+        <p><strong>Archetype:</strong> <span id="starArchetype"></span></p>
+        <p id="archetypeSummary"></p>
+
+        <h3>Elemental Balance</h3>
+        <ul id="elementalBalance"></ul>
+
+        <h3>Fixed Stars Resonance</h3>
+        <ul id="fixedStars"></ul>
+
+        <h3>Practical Integration</h3>
+        <p id="activationSteps"></p>
+      </div>
+    </section>
+
+    <button id="backToCyclesBtn">← Back to My Cycles</button>
+  </main>
+
+  <script type="module" src="cosmic-blueprint.js"></script>
+</body>
+</html>
+
+

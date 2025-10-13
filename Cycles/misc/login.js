@@ -1,7 +1,10 @@
 // login.js
 import { signInWithEmailAndPassword } 
   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { firebaseAuth } from "./firebase.js";
+import { firebaseAuth, firebaseDB } 
+  from "./firebase.js";
+import { doc, getDoc } 
+  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("email");
@@ -30,20 +33,39 @@ document.addEventListener("DOMContentLoaded", () => {
       loginMessage.style.color = "lightgreen";
 
       // Ensure Firebase session is active before redirect
-      const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
+      const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
         if (user) {
           unsubscribe();
+
+          // 🔹 Pull user data from Firestore
+          const userRef = doc(firebaseDB, "users", user.uid);
+          const snap = await getDoc(userRef);
+          const userData = snap.exists() ? snap.data() : {};
+
+          // 🔹 Save key info for other pages
+          localStorage.setItem("user", JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            username: userData.username || user.displayName || "Guest User",
+            fullName: userData.fullName || "",
+            birthday: userData.birthday || "",
+            birthTime: userData.birthTime || "",
+            birthLocation: userData.birthLocation || "",
+          }));
+
+          // ✅ Redirect after saving data
           window.location.assign("profile.html");
         }
       });
 
     } catch (error) {
       console.error("Login error:", error);
-      loginMessage.textContent = error.code === "auth/user-not-found"
-        ? "No account found with this email."
-        : error.code === "auth/wrong-password"
-        ? "Incorrect password."
-        : error.message;
+      loginMessage.textContent = 
+        error.code === "auth/user-not-found"
+          ? "No account found with this email."
+          : error.code === "auth/wrong-password"
+          ? "Incorrect password."
+          : error.message;
       loginMessage.style.color = "salmon";
     } finally {
       loginBtn.disabled = false;
@@ -53,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Login on button click
   loginBtn.addEventListener("click", handleLogin);
 
-  // Login when pressing Enter in email or password fields
+  // Login when pressing Enter
   [emailInput, passwordInput].forEach(input =>
     input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") handleLogin();
