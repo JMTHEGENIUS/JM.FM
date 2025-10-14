@@ -325,25 +325,35 @@ const weeklyLessons = {
 
             weeksContainer.appendChild(div);
         });
+
+        // Inside weekly.html JS
+          document.querySelectorAll('#weeksContainer .week-box').forEach((box, index) => {
+            box.addEventListener('click', () => {
+              const selectedDay = (index * 7) + 1;  // example: week 1 starts at day 1, week 2 at 8, etc.
+              localStorage.setItem('selectedDay', selectedDay);
+              window.location.href = 'daily.html';
+  });
+});
+
     }
 
     // --- DAILY PAGE ---
 if (document.getElementById('dailyTitle')) {
 
+  // Clear selectedDay so it doesn't override current week logic
+    localStorage.removeItem('selectedDay');
+
+
     const cycleNumber = parseInt(localStorage.getItem('cycle')) || 1;
     const weekNumber = parseInt(localStorage.getItem('week')) || 1;
     const weekStart = parseInt(localStorage.getItem('weekStart')) || 1;
 
-    // Use cycleStart instead of recentBirthday to align with new logic
     const cycleStartStr = localStorage.getItem('cycleStart');
     const cycleStart = cycleStartStr ? new Date(cycleStartStr) : new Date();
 
-    // Also pull the true birthday for display if needed
     const birthdayStr = localStorage.getItem('birthday');
     const birthday = birthdayStr ? new Date(birthdayStr + "T12:00:00") : null;
 
-
-    // Example dailyData object - expand with your actual data
     const dailyData = [
         { day: "Sunday", lesson: "Focus on self-reflection.", affirmation: "I grow each day with purpose.", planet: "Sun", sign: "Leo", colors: "Gold", chakra: "Solar Plexus", journalPrompt: "What did I learn today?" },
         { day: "Monday", lesson: "Connect with intuition.", affirmation: "I trust my inner guidance.", planet: "Moon", sign: "Cancer", colors: "Silver", chakra: "Sacral", journalPrompt: "How did I feel emotionally today?" },
@@ -354,29 +364,38 @@ if (document.getElementById('dailyTitle')) {
         { day: "Saturday", lesson: "Rest and recharge.", affirmation: "I honor my body and mind.", planet: "Saturn", sign: "Capricorn", colors: "Black", chakra: "Root", journalPrompt: "How did I rest today?" }
     ];
 
-    let currentDay = 1; // start with first day of the week
+    // Determine currentDay based on whether it's the current week
+    let currentDay;
+
+    // Calculate current week number relative to cycleStart
+    const today = new Date();
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const todayWeekNumber = Math.floor((today - cycleStart) / msPerWeek) + 1;
+
+    if (weekStart === todayWeekNumber) {
+        // Current week → show today's day
+        currentDay = ((today - cycleStart) / (24 * 60 * 60 * 1000)) % 7 + 1; 
+        currentDay = Math.floor(currentDay); // ensure integer
+    } else {
+        // Past/future week → show first day
+        currentDay = 1;
+    }
 
     function renderDay(n) {
         currentDay = n;
 
         const globalDay = weekStart + (n - 1);
-        // Calculate date based on true cycle start (the day after the birthday)
         const date = new Date(cycleStart);
         date.setDate(date.getDate() + (globalDay - 1));
-
 
         const weekday = date.getDay();
         const info = dailyData[weekday];
 
-        // Calendar box: display actual date and day of the week
-         document.getElementById('dailyTitle').textContent =
-         `${date.toLocaleString('default', { weekday: 'long' })}, ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+        document.getElementById('dailyTitle').textContent =
+            `${date.toLocaleString('default', { weekday: 'long' })}, ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
 
-
-        // Daily lesson inside calendar box
         document.getElementById('dailylesson').textContent = info.lesson;
 
-        // Left column: detailed daily info
         document.getElementById('dailyInfo').innerHTML = `
             <h3>Daily Info</h3>
             <p><strong>Affirmation:</strong> ${info.affirmation}</p>
@@ -386,11 +405,13 @@ if (document.getElementById('dailyTitle')) {
             <p><strong>Day Number:</strong> ${n}</p>
             <p><strong>Day Colors:</strong> ${info.colors}</p>
             <p><strong>Chakra:</strong> ${info.chakra}</p>
-            <p><strong>Journal Prompt:</strong> ${info.journalPrompt}</p>
         `;
+
+        // Journal prompt above journal box
+        const journalPromptEl = document.getElementById('journalPrompt');
+        if (journalPromptEl) journalPromptEl.textContent = info.journalPrompt;
     }
 
-    // Prev/Next buttons
     document.getElementById('prevDay').addEventListener('click', () => {
         if (currentDay > 1) renderDay(currentDay - 1);
     });
@@ -399,7 +420,6 @@ if (document.getElementById('dailyTitle')) {
         if (currentDay < 7) renderDay(currentDay + 1);
     });
 
-    // Render the first day by default
     renderDay(currentDay);
 
     // Highlight if today = birthday
@@ -657,11 +677,6 @@ if (userBirthdayEl) {
     return zodiacData.find(z => (month===z.start[0] && day>=z.start[1]) || (month===z.end[0] && day<=z.end[1])) || { sign:"Unknown", meaning:"" };
   }
 
- 
-
-
-
-
   // ==================== ARCHETYPE ====================
     function generateArchetype(lifePath, sunSign, moonSign, risingSign) {
       const archetypes = {
@@ -733,7 +748,6 @@ if (userBirthdayEl) {
     const zodiac = getZodiac(month, day);
     if (document.getElementById("zodiacSign")) document.getElementById("zodiacSign").textContent = zodiac.sign;
     if (document.getElementById("zodiacMeaning")) document.getElementById("zodiacMeaning").textContent = zodiac.meaning;
-    
 
     // Numerology
     const lifePath = calculateLifePath(year, month, day);
@@ -770,110 +784,7 @@ if (userBirthdayEl) {
 
     console.log("🔮 Archetype generated:", archetype);
   });
-
-  // ==================== DISPLAY ====================
-  // document.addEventListener("DOMContentLoaded",()=>{
-  //   const birthdayStr = localStorage.getItem("birthday");
-  //   const fullName = localStorage.getItem("fullName") || "Mystery Soul";
-  //   if (!birthdayStr) return;
-
-  //   const { year, month, day } = parseBirthday(birthdayStr);
-
-  //   // Zodiac
-  //   const zodiac = getZodiac(month, day);
-  //   const zodiacSignEl = document.getElementById("zodiacSign");
-  //   const zodiacMeaningEl = document.getElementById("zodiacMeaning");
-  //   if(zodiacSignEl) zodiacSignEl.textContent = zodiac.sign;
-  //   if(zodiacMeaningEl) zodiacMeaningEl.textContent = zodiac.meaning;
-
-  //   // Numerology
-  //   const lifePath = calculateLifePath(year, month, day);
-  //   const destiny = calculateDestinyNumber(fullName);
-  //   const soulUrge = calculateSoulUrgeNumber(fullName);
-
-  //   const lifePathNumEl = document.getElementById("lifePathNum");
-  //   const lifePathMeaningEl = document.getElementById("lifePathMeaning");
-  //   const dayNumEl = document.getElementById("dayNum");
-  //   const dayNumMeaningEl = document.getElementById("dayNumMeaning");
-  //   const destinyNumEl = document.getElementById("destinyNum");
-  //   const destinyMeaningEl = document.getElementById("destinyMeaning");
-  //   const soulUrgeNumEl = document.getElementById("soulUrgeNum");
-  //   const soulUrgeMeaningEl = document.getElementById("soulUrgeMeaning");
-
-  
-
-  //   if(lifePathNumEl) lifePathNumEl.textContent = lifePath;
-  //   if(lifePathMeaningEl) lifePathMeaningEl.textContent = numerologyMeanings.lifePath[lifePath];
-  //   if(dayNumEl) dayNumEl.textContent = dayNumber;
-  //   if(dayNumMeaningEl) dayNumMeaningEl.textContent = `Day ${dayNumber} reflects your daily essence — ${numerologyMeanings.lifePath[dayNumber] || "expressed through instinct and daily rhythm."}`;
-  //   if(destinyNumEl) destinyNumEl.textContent = destiny;
-  //   if(destinyMeaningEl) destinyMeaningEl.textContent = numerologyMeanings.destiny[destiny];
-  //   if(soulUrgeNumEl) soulUrgeNumEl.textContent = soulUrge;
-  //   if(soulUrgeMeaningEl) soulUrgeMeaningEl.textContent = numerologyMeanings.soulUrge[soulUrge];
-  // });
-
-
-//     // ==================== DISPLAY ON CYCLES PAGE ====================
-// document.addEventListener("DOMContentLoaded", () => {
-//   const birthdayStr = localStorage.getItem("birthday");
-//   const fullName = localStorage.getItem("fullName") || "Mystery Soul";
-
-//   if (!birthdayStr) return;
-//   const parsed = parseBirthday(birthdayStr);
-//   if (!parsed) return;
-//   const { year, month, day } = parsed;
-
-//   // 🌞 Zodiac
-//   const zodiac = getZodiac(month, day);
-//   if (document.getElementById("zodiacSign"))
-//     document.getElementById("zodiacSign").textContent = zodiac.sign;
-//   if (document.getElementById("zodiacMeaning"))
-//     document.getElementById("zodiacMeaning").textContent = zodiac.meaning;
-
-//   // 🔢 Numerology
-//   const lifePath = calculateLifePath(year, month, day);
-//   const destiny = calculateDestinyNumber(fullName);
-//   const soulUrge = calculateSoulUrgeNumber(fullName);
-
-//   if (document.getElementById("lifePathNum"))
-//     document.getElementById("lifePathNum").textContent = lifePath;
-//   if (document.getElementById("lifePathMeaning"))
-//     document.getElementById("lifePathMeaning").textContent = numerologyMeanings.lifePath[lifePath];
-//   if (document.getElementById("destinyNum"))
-//     document.getElementById("destinyNum").textContent = destiny;
-//   if (document.getElementById("destinyMeaning"))
-//     document.getElementById("destinyMeaning").textContent = numerologyMeanings.destiny[destiny];
-//   if (document.getElementById("soulUrgeNum"))
-//     document.getElementById("soulUrgeNum").textContent = soulUrge;
-//   if (document.getElementById("soulUrgeMeaning"))
-//     document.getElementById("soulUrgeMeaning").textContent = numerologyMeanings.soulUrge[soulUrge];
-
-
-
-//   // 🌌 Archetype
-//   const moonSign = localStorage.getItem("moonSign") || "Gemini";
-//   const risingSign = localStorage.getItem("risingSign") || "Leo";
-
-//   console.log("🔮 Archetype debug:", { lifePath, sunSign: zodiac.sign, moonSign, risingSign });
-
-//   const archetypeData = generateArchetype(lifePath, zodiac.sign, moonSign, risingSign);
-
-//   if (document.getElementById("archetype"))
-//     document.getElementById("archetype").textContent = archetypeData.starArchetype;
-//   if (document.getElementById("dominantElement"))
-//     document.getElementById("dominantElement").textContent = archetypeData.dominantElement;
-//   if (document.getElementById("elementalBalance"))
-//     document.getElementById("elementalBalance").textContent = archetypeData.elementalBalance;
-//   if (document.getElementById("fixedStars"))
-//     document.getElementById("fixedStars").innerHTML = archetypeData.fixedStars
-//       .map(f => `<li><strong>${f.name}:</strong> ${f.meaning}</li>`)
-//       .join('');
-//   if (document.getElementById("activationSteps"))
-//     document.getElementById("activationSteps").textContent = archetypeData.activationSteps;
-// });
-
 })();
-
 
 // === Cosmic Toggle (unchanged) ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -891,7 +802,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-
-
 

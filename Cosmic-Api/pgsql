@@ -1,0 +1,9 @@
+
+Response: JSON with `sun`, `moon`, `ascendant` objects (sign and degrees).
+
+## Upgrade path (production accuracy)
+
+- Replace the approximate math with **Swiss Ephemeris** (C library + JS wrapper) or use JPL ephemeris DE files.
+- When you integrate Swiss Ephemeris, implement the same `computeChart` signature but call swe functions to get planet longitudes, houses, aspects, etc.
+- Cache results, add API keys & rate limits, add user/account management, publish docs.
+
